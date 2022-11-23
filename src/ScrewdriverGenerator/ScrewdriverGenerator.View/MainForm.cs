@@ -16,25 +16,5 @@ namespace ScrewdriverGenerator.View
         {
             InitializeComponent();
         }
-
-        private void statusStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
-        {
-
-        }
-
-        private void groupBox3_Enter(object sender, EventArgs e)
-        {
-
-        }
-
-        private void groupBox2_Enter(object sender, EventArgs e)
-        {
-
-        }
-
-        private void groupBox7_Enter(object sender, EventArgs e)
-        {
-
-        }
     }
 }
