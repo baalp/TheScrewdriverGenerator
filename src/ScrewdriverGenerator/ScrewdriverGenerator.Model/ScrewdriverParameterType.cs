@@ -24,12 +24,12 @@ namespace ScrewdriverGenerator.Model
         /// <summary>
         /// D – Самая широкая часть рукоятки
         /// </summary>
-        WidestPartofHandle,
+        WidestPartHandle,
 
         /// <summary>
         /// Lo – Длина внешней части стержня
         /// </summary>
-        LengthofOuterPartofRod,
+        LengthOuterPartRod,
 
         /// <summary>
         /// Lh – Длина рукоятки отвертки
@@ -39,6 +39,6 @@ namespace ScrewdriverGenerator.Model
         /// <summary>
         /// Li – Длина внутренней части стержня
         /// </summary>
-        LengthofInnerPartofRod
+        LengthInnerPartRod
     }
 }

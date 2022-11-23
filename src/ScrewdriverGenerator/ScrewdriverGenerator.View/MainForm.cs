@@ -16,12 +16,19 @@ namespace ScrewdriverGenerator.View
         {
             InitializeComponent();
 
-            // Проверка на ввод некорректных символов во все TextBox.
+            // Предотвращение ввода некорректных символов во все TextBox.
             TextBoxTipRodHeight.KeyPress            += PreventInputWrongSymbols;
             TextBoxWidestPartOfHandle.KeyPress      += PreventInputWrongSymbols;
             TextBoxLengthOfOuterPartOfRod.KeyPress  += PreventInputWrongSymbols;
             TextBoxLengthOfHandle.KeyPress          += PreventInputWrongSymbols;
             TextBoxLengthOfInnerPartOfRod.KeyPress  += PreventInputWrongSymbols;
+
+            // Проверка на ввод некорректных значений.
+            TextBoxTipRodHeight.TextChanged             += FindError;
+            TextBoxWidestPartOfHandle.TextChanged       += FindError;
+            TextBoxLengthOfOuterPartOfRod.TextChanged   += FindError;
+            TextBoxLengthOfHandle.TextChanged           += FindError;
+            TextBoxLengthOfInnerPartOfRod.TextChanged   += FindError;
         }
 
         /// <summary>
@@ -42,6 +49,11 @@ namespace ScrewdriverGenerator.View
             {
                 e.Handled = true;
             }
+        }
+
+        private void FindError(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -41,7 +41,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Parameter.cs" />
+    <Compile Include="ScrewdriverData.cs" />
+    <Compile Include="ScrewdriverParameter.cs" />
     <Compile Include="ScrewdriverParameterType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ScrewdriverGenerator.Model
 {
-    public class Parameter
+    public class ScrewdriverParameter
     {
         private double _value;
         private readonly double _minValue;
@@ -28,7 +28,7 @@ namespace ScrewdriverGenerator.Model
             }
         }
 
-        public Parameter
+        public ScrewdriverParameter
             (
             double value, 
             double minValue, 
