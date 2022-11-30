@@ -83,5 +83,11 @@
   <ItemGroup>
     <None Include="Resources\ParameterInformation.png" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ScrewdriverGenerator.Model\ScrewdriverGenerator.Model.csproj">
+      <Project>{72d1538c-0652-4bcf-8db3-e7f4a78a8c64}</Project>
+      <Name>ScrewdriverGenerator.Model</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

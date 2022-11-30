@@ -59,6 +59,7 @@
             // ButtonBuild
             // 
             this.ButtonBuild.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.ButtonBuild.Enabled = false;
             this.ButtonBuild.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.ButtonBuild.Location = new System.Drawing.Point(14, 474);
             this.ButtonBuild.Name = "ButtonBuild";
@@ -95,14 +96,15 @@
             this.RadioButtonTypeOfTipFlat.TabStop = true;
             this.RadioButtonTypeOfTipFlat.Text = "Flat";
             this.RadioButtonTypeOfTipFlat.UseVisualStyleBackColor = true;
+            this.RadioButtonTypeOfTipFlat.CheckedChanged += new System.EventHandler(this.RadioButtonTypeOfTipFlat_CheckedChanged);
             // 
             // TextBoxLengthOfInnerPartOfRod
             // 
+            this.TextBoxLengthOfInnerPartOfRod.Enabled = false;
             this.TextBoxLengthOfInnerPartOfRod.Location = new System.Drawing.Point(6, 23);
             this.TextBoxLengthOfInnerPartOfRod.Name = "TextBoxLengthOfInnerPartOfRod";
             this.TextBoxLengthOfInnerPartOfRod.Size = new System.Drawing.Size(388, 22);
             this.TextBoxLengthOfInnerPartOfRod.TabIndex = 0;
-            this.TextBoxLengthOfInnerPartOfRod.Text = "12345";
             // 
             // GroupBoxLengthOfInnerPartOfRod
             // 
@@ -117,11 +119,11 @@
             // 
             // TextBoxLengthOfHandle
             // 
+            this.TextBoxLengthOfHandle.Enabled = false;
             this.TextBoxLengthOfHandle.Location = new System.Drawing.Point(6, 23);
             this.TextBoxLengthOfHandle.Name = "TextBoxLengthOfHandle";
             this.TextBoxLengthOfHandle.Size = new System.Drawing.Size(388, 22);
             this.TextBoxLengthOfHandle.TabIndex = 0;
-            this.TextBoxLengthOfHandle.Text = "12345";
             // 
             // GroupBoxLengthOfHandle
             // 
@@ -136,11 +138,11 @@
             // 
             // TextBoxLengthOfOuterPartOfRod
             // 
+            this.TextBoxLengthOfOuterPartOfRod.Enabled = false;
             this.TextBoxLengthOfOuterPartOfRod.Location = new System.Drawing.Point(6, 23);
             this.TextBoxLengthOfOuterPartOfRod.Name = "TextBoxLengthOfOuterPartOfRod";
             this.TextBoxLengthOfOuterPartOfRod.Size = new System.Drawing.Size(388, 22);
             this.TextBoxLengthOfOuterPartOfRod.TabIndex = 0;
-            this.TextBoxLengthOfOuterPartOfRod.Text = "12345";
             // 
             // GroupBoxLengthOfOuterPartOfRod
             // 
@@ -155,11 +157,11 @@
             // 
             // TextBoxWidestPartOfHandle
             // 
+            this.TextBoxWidestPartOfHandle.Enabled = false;
             this.TextBoxWidestPartOfHandle.Location = new System.Drawing.Point(6, 23);
             this.TextBoxWidestPartOfHandle.Name = "TextBoxWidestPartOfHandle";
             this.TextBoxWidestPartOfHandle.Size = new System.Drawing.Size(388, 22);
             this.TextBoxWidestPartOfHandle.TabIndex = 0;
-            this.TextBoxWidestPartOfHandle.Text = "12345";
             // 
             // GroupBoxWidestPartOfHandle
             // 
@@ -174,11 +176,11 @@
             // 
             // TextBoxTipRodHeight
             // 
+            this.TextBoxTipRodHeight.BackColor = System.Drawing.Color.White;
             this.TextBoxTipRodHeight.Location = new System.Drawing.Point(6, 23);
             this.TextBoxTipRodHeight.Name = "TextBoxTipRodHeight";
             this.TextBoxTipRodHeight.Size = new System.Drawing.Size(388, 22);
             this.TextBoxTipRodHeight.TabIndex = 0;
-            this.TextBoxTipRodHeight.Text = "12345";
             // 
             // GroupBoxTipRodHeight
             // 
@@ -213,6 +215,7 @@
             this.RadioButtonTypeOfTipTriangular.TabIndex = 2;
             this.RadioButtonTypeOfTipTriangular.Text = "Triangular";
             this.RadioButtonTypeOfTipTriangular.UseVisualStyleBackColor = true;
+            this.RadioButtonTypeOfTipTriangular.CheckedChanged += new System.EventHandler(this.RadioButtonTypeOfTipTriangular_CheckedChanged);
             // 
             // RadioButtonTypeOfTipCross
             // 
@@ -223,6 +226,7 @@
             this.RadioButtonTypeOfTipCross.TabIndex = 1;
             this.RadioButtonTypeOfTipCross.Text = "Cross";
             this.RadioButtonTypeOfTipCross.UseVisualStyleBackColor = true;
+            this.RadioButtonTypeOfTipCross.CheckedChanged += new System.EventHandler(this.RadioButtonTypeOfTipCross_CheckedChanged);
             // 
             // PictureBoxParameterInformation
             // 

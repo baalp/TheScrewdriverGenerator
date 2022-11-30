@@ -6,24 +6,25 @@ using System.Threading.Tasks;
 
 namespace ScrewdriverGenerator.Model
 {
-    class ScrewdriverData
+    public class ScrewdriverData
     {
         public Dictionary<ScrewdriverParameterType, ScrewdriverParameter> Parameters { get; set; }
         public Dictionary<ScrewdriverParameterType, string> Errors { get; set; }
+
+        private double _minTipRodHeight = 0.1;
+        private double _maxTipRodHeight = 10;
+        private double _minWidestPartHandleMultiple = 16;
+        private double _maxWidestPartHandleMultiple = 24;
+        private double _minLengthOuterPartRodMultiple = 20;
+        private double _maxLengthOuterPartRodMultiple = 400;
+        private double _minLengthHandleMultiple = 3.75;
+        private double _maxLengthHandleMultiple = 7.5;
+        private double _minLengthInnerPartRodMultiple = 0.5;
+        private double _maxLengthInnerPartRodMultiple = 0.6;
+
         public ScrewdriverData()
         {
             Errors = new Dictionary<ScrewdriverParameterType, string>();
-
-            var _minTipRodHeight = 0.1;
-            var _maxTipRodHeight = 10;
-            var _minWidestPartHandleMultiple = 16;
-            var _maxWidestPartHandleMultiple = 24;
-            var _minLengthOuterPartRodMultiple = 20;
-            var _maxLengthOuterPartRodMultiple = 400;
-            var _minLengthHandleMultiple = 3.75;
-            var _maxLengthHandleMultiple = 7.5;
-            var _minLengthInnerPartRodMultiple = 0.5;
-            var _maxLengthInnerPartRodMultiple = 0.6;
 
             Parameters = new Dictionary<ScrewdriverParameterType, ScrewdriverParameter>()
             {
@@ -76,13 +77,79 @@ namespace ScrewdriverGenerator.Model
                 },
 
                 { ScrewdriverParameterType.LengthHandle,
-                    new ScrewdriverParameter(1, 1.6, 240,"Length of handle",
-                    ScrewdriverParameterType.LengthHandle, Errors)},
+                    new ScrewdriverParameter
+                    (
+                        -1,
+                        _minTipRodHeight * _minWidestPartHandleMultiple * 
+                        _minLengthHandleMultiple,
+                        _maxTipRodHeight * _maxWidestPartHandleMultiple * 
+                        _maxLengthHandleMultiple,
+                        "Length of handle",
+                        ScrewdriverParameterType.LengthHandle, 
+                        Errors
+                    )
+                },
 
                 { ScrewdriverParameterType.LengthInnerPartRod,
-                    new ScrewdriverParameter(1, 1.6, 240,"Length of inner part of rod",
-                    ScrewdriverParameterType.LengthInnerPartRod, Errors)},
+                    new ScrewdriverParameter
+                    (
+                        -1,
+                        _minTipRodHeight * _minWidestPartHandleMultiple * 
+                        _minLengthHandleMultiple * _minLengthInnerPartRodMultiple,
+                        _maxTipRodHeight * _maxWidestPartHandleMultiple * 
+                        _maxLengthHandleMultiple * _maxLengthInnerPartRodMultiple,
+                        "Length of inner part of rod",
+                        ScrewdriverParameterType.LengthInnerPartRod, 
+                        Errors
+                    )
+                },
             };
+        }
+
+        public void SetParameters
+            (
+            double tipType,
+            double tipRodHeight,
+            double widestPartHandle,
+            double lengthOuterPartRod,
+            double lengthHandle,
+            double lengthInnerPartRod
+            )
+        {
+            Errors.Clear();
+
+            Parameters[ScrewdriverParameterType.TipType].Value = tipType;
+
+            Parameters[ScrewdriverParameterType.TipRodHeight].Value = tipRodHeight;
+            if (Errors.Any()) return;
+            Parameters[ScrewdriverParameterType.WidestPartHandle].MinValue = 
+                tipRodHeight * _minWidestPartHandleMultiple;
+            Parameters[ScrewdriverParameterType.WidestPartHandle].MaxValue =
+                tipRodHeight * _maxWidestPartHandleMultiple;
+            Parameters[ScrewdriverParameterType.LengthOuterPartRod].MinValue =
+                tipRodHeight * _minLengthOuterPartRodMultiple;
+            Parameters[ScrewdriverParameterType.LengthOuterPartRod].MaxValue =
+                tipRodHeight * _maxLengthOuterPartRodMultiple;
+
+            Parameters[ScrewdriverParameterType.WidestPartHandle].Value = widestPartHandle;
+            if (Errors.Any()) return;
+            Parameters[ScrewdriverParameterType.LengthHandle].MinValue =
+                widestPartHandle * _minLengthHandleMultiple;
+            Parameters[ScrewdriverParameterType.LengthHandle].MaxValue =
+                widestPartHandle * _maxLengthHandleMultiple;
+
+            Parameters[ScrewdriverParameterType.LengthOuterPartRod].Value = lengthOuterPartRod;
+            if (Errors.Any()) return;
+
+            Parameters[ScrewdriverParameterType.LengthHandle].Value = lengthHandle;
+            if (Errors.Any()) return;
+            Parameters[ScrewdriverParameterType.LengthInnerPartRod].MinValue =
+                lengthHandle * _minLengthInnerPartRodMultiple;
+            Parameters[ScrewdriverParameterType.LengthInnerPartRod].MaxValue =
+                lengthHandle * _maxLengthInnerPartRodMultiple;
+
+            Parameters[ScrewdriverParameterType.LengthInnerPartRod].Value = lengthInnerPartRod;
+            if (Errors.Any()) return;
         }
     }
 }

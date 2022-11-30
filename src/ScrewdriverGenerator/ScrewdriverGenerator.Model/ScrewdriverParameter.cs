@@ -9,8 +9,9 @@ namespace ScrewdriverGenerator.Model
     public class ScrewdriverParameter
     {
         private double _value;
-        private readonly double _minValue;
-        private readonly double _maxValue;
+        private double _minValue;
+        private double _maxValue;
+        private readonly string _emptyErrorMessage;
         private readonly string _minErrorMessage;
         private readonly string _maxErrorMessage;
         private readonly ScrewdriverParameterType _screwdriverParameterType;
@@ -28,6 +29,24 @@ namespace ScrewdriverGenerator.Model
             }
         }
 
+        public double MinValue
+        {
+            get => _minValue;
+            set 
+            {
+                _minValue = value;
+            }
+        }
+
+        public double MaxValue
+        {
+            get => _maxValue;
+            set
+            {
+                _maxValue = value;
+            }
+        }
+
         public ScrewdriverParameter
             (
             double value, 
@@ -41,16 +60,23 @@ namespace ScrewdriverGenerator.Model
             _errors = errors;
             _minValue = minValue;
             _maxValue = maxValue;
+            _emptyErrorMessage =
+                "Error: " + errorMessageAttachment + " has not been entered.";
             _minErrorMessage = 
-                "Error: " + errorMessageAttachment + " can't be less than " + _minValue + " mm.";
+                "Error: " + errorMessageAttachment + " is less than the permissible value.";
             _maxErrorMessage = 
-                "Error: " + errorMessageAttachment + " can't be more than " + _maxValue + " mm.";
+                "Error: " + errorMessageAttachment + " is greater than the allowable.";
             _screwdriverParameterType = screwdriverParameterType;
             Value = value;
         }
 
         private bool CheckRange(double value)
         {
+            if (value == -1.0)
+            {
+                _errors.Add(_screwdriverParameterType, _emptyErrorMessage);
+                return false;
+            }
             if (value < _minValue)
             {
                 _errors.Add(_screwdriverParameterType, _minErrorMessage);
