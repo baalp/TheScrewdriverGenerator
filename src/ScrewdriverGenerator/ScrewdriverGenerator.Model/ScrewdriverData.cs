@@ -11,16 +11,16 @@ namespace ScrewdriverGenerator.Model
         public Dictionary<ScrewdriverParameterType, ScrewdriverParameter> Parameters { get; set; }
         public Dictionary<ScrewdriverParameterType, string> Errors { get; set; }
 
-        private double _minTipRodHeight = 0.1;
-        private double _maxTipRodHeight = 10;
-        private double _minWidestPartHandleMultiple = 16;
-        private double _maxWidestPartHandleMultiple = 24;
-        private double _minLengthOuterPartRodMultiple = 20;
-        private double _maxLengthOuterPartRodMultiple = 400;
-        private double _minLengthHandleMultiple = 3.75;
-        private double _maxLengthHandleMultiple = 7.5;
-        private double _minLengthInnerPartRodMultiple = 0.5;
-        private double _maxLengthInnerPartRodMultiple = 0.6;
+        private const double _minTipRodHeight = 0.1;
+        private const double _maxTipRodHeight = 10;
+        private const double _minWidestPartHandleMultiple = 16;
+        private const double _maxWidestPartHandleMultiple = 24;
+        private const double _minLengthOuterPartRodMultiple = 20;
+        private const double _maxLengthOuterPartRodMultiple = 400;
+        private const double _minLengthHandleMultiple = 3.75;
+        private const double _maxLengthHandleMultiple = 7.5;
+        private const double _minLengthInnerPartRodMultiple = 0.5;
+        private const double _maxLengthInnerPartRodMultiple = 0.6;
 
         public ScrewdriverData()
         {
@@ -150,6 +150,66 @@ namespace ScrewdriverGenerator.Model
 
             Parameters[ScrewdriverParameterType.LengthInnerPartRod].Value = lengthInnerPartRod;
             if (Errors.Any()) return;
+        }
+
+        public string GetGroupBoxDescription(ScrewdriverParameter screwdriverParameter)
+        {
+            if (Errors.Any())
+            {
+                var _errorKey = Errors.ElementAt(0).Key;
+
+                switch (_errorKey)
+                {
+                    case ScrewdriverParameterType.TipRodHeight:
+                        return GenerateGroupBoxDescription(screwdriverParameter, 1);
+                        break;
+
+                    case ScrewdriverParameterType.WidestPartHandle:
+                        return GenerateGroupBoxDescription(screwdriverParameter, 3);
+                        break;
+
+                    case ScrewdriverParameterType.LengthOuterPartRod:
+                        return GenerateGroupBoxDescription(screwdriverParameter, 4);
+                        break;
+
+                    case ScrewdriverParameterType.LengthHandle:
+                        return GenerateGroupBoxDescription(screwdriverParameter, 4);
+                        break;
+
+                    case ScrewdriverParameterType.LengthInnerPartRod:
+                        return GenerateGroupBoxDescription(screwdriverParameter, 5);
+                        break;
+
+                    default:
+                        return string.Empty;
+                }
+            }
+            else
+            {
+                return GenerateGroupBoxDescription(screwdriverParameter, 5);
+            }
+            return string.Empty;
+        }
+
+        private string GenerateGroupBoxDescription(ScrewdriverParameter screwdriverParameter, int stopper)
+        {
+            string[] _groupBoxTextBegin = new string[]
+            {
+                "Tip rod height: (H, ",
+                "Widest part of handle: (D, ",
+                "Length of outer part of rod: (Lo, ",
+                "Length of handle: (Lh, ",
+                "Length of inner part of rod: (Li, "
+            };
+
+            if ((int)screwdriverParameter.ScrewdriverParameterType <= stopper)
+            {
+                return _groupBoxTextBegin[(int)screwdriverParameter.ScrewdriverParameterType - 1] + screwdriverParameter.MinValue + " - " + screwdriverParameter.MaxValue + " mm.)";
+            }
+            else
+            {
+                return _groupBoxTextBegin[(int)screwdriverParameter.ScrewdriverParameterType - 1] + "# - # mm.)";
+            }
         }
     }
 }

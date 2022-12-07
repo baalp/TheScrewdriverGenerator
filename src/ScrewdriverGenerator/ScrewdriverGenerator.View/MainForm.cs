@@ -64,7 +64,14 @@ namespace ScrewdriverGenerator.View
         /// <param name="e">Нажатая на клавиатуре клавиша.</param>
         private static void PreventInputWrongSymbols(object sender, KeyPressEventArgs e)
         {
-            if(
+            if (((TextBox)sender).Text.Length >= 8 && !(e.KeyChar == (char)8))
+            {
+                e.Handled = true;
+                return;
+            }
+
+            if 
+            (
                 !char.IsControl(e.KeyChar) &&
                 !char.IsDigit(e.KeyChar) &&
                 !(
@@ -113,18 +120,17 @@ namespace ScrewdriverGenerator.View
                 keyValue.Value.Enabled = true;
                 keyValue.Value.BackColor = _colorDefault;
             }
-            string[] _groupBoxTextBegin = new string[]
-            {
-                "Tip rod height: (H, in mm, ",
-                "Widest part of handle: (D, in mm, ",
-                "Length of outer part of rod: (Lo, in mm, ",
-                "Length of handle: (Lh, in mm, ",
-                "Length of inner part of rod: (Li, in mm, "
-            };
-            string _groupBoxTextEndDisable = "# - # mm.)";
+
             ButtonBuild.Enabled = true;
+            ButtonBuild.Text = "Build";
             StatusStripError.BackColor = _colorDefault;
             ToolStripStatusLabelError.Text = "No errors found.";
+
+            GroupBoxTipRodHeight.Text = _screwdriverData.GetGroupBoxDescription(_screwdriverData.Parameters[ScrewdriverParameterType.TipRodHeight]);
+            GroupBoxWidestPartOfHandle.Text = _screwdriverData.GetGroupBoxDescription(_screwdriverData.Parameters[ScrewdriverParameterType.WidestPartHandle]);
+            GroupBoxLengthOfOuterPartOfRod.Text = _screwdriverData.GetGroupBoxDescription(_screwdriverData.Parameters[ScrewdriverParameterType.LengthOuterPartRod]);
+            GroupBoxLengthOfHandle.Text = _screwdriverData.GetGroupBoxDescription(_screwdriverData.Parameters[ScrewdriverParameterType.LengthHandle]);
+            GroupBoxLengthOfInnerPartOfRod.Text = _screwdriverData.GetGroupBoxDescription(_screwdriverData.Parameters[ScrewdriverParameterType.LengthInnerPartRod]);
 
             if (_errors.Any())
             {
@@ -134,6 +140,7 @@ namespace ScrewdriverGenerator.View
                 StatusStripError.BackColor = _colorError;
                 ToolStripStatusLabelError.Text = _errorValue;
                 ButtonBuild.Enabled = false;
+                ButtonBuild.Text = "Correct any errors to build a model";
 
                 if (_errorKey == ScrewdriverParameterType.TipRodHeight)
                 {
@@ -142,82 +149,27 @@ namespace ScrewdriverGenerator.View
                     TextBoxLengthOfOuterPartOfRod.Enabled = false;
                     TextBoxLengthOfHandle.Enabled = false;
                     TextBoxLengthOfInnerPartOfRod.Enabled = false;
-                    GroupBoxTipRodHeight.Text = _groupBoxTextBegin[0] + _screwdriverData.Parameters[ScrewdriverParameterType.TipRodHeight].MinValue + " - "
-                        + _screwdriverData.Parameters[ScrewdriverParameterType.TipRodHeight].MaxValue + " mm.)";
-                    GroupBoxWidestPartOfHandle.Text = _groupBoxTextBegin[1] + _groupBoxTextEndDisable;
-                    GroupBoxLengthOfOuterPartOfRod.Text = _groupBoxTextBegin[2] + _groupBoxTextEndDisable;
-                    GroupBoxLengthOfHandle.Text = _groupBoxTextBegin[3] + _groupBoxTextEndDisable;
-                    GroupBoxLengthOfInnerPartOfRod.Text = _groupBoxTextBegin[4] + _groupBoxTextEndDisable;
                 }
                 else if (_errorKey == ScrewdriverParameterType.WidestPartHandle)
                 {
                     TextBoxWidestPartOfHandle.BackColor = _colorError;
                     TextBoxLengthOfHandle.Enabled = false;
                     TextBoxLengthOfInnerPartOfRod.Enabled = false;
-                    GroupBoxTipRodHeight.Text = _groupBoxTextBegin[0] + _screwdriverData.Parameters[ScrewdriverParameterType.TipRodHeight].MinValue + " - "
-                        + _screwdriverData.Parameters[ScrewdriverParameterType.TipRodHeight].MaxValue + " mm.)";
-                    GroupBoxWidestPartOfHandle.Text = _groupBoxTextBegin[1] + _screwdriverData.Parameters[ScrewdriverParameterType.WidestPartHandle].MinValue + " - "
-                        + _screwdriverData.Parameters[ScrewdriverParameterType.WidestPartHandle].MaxValue + " mm.)";
-                    GroupBoxLengthOfOuterPartOfRod.Text = _groupBoxTextBegin[2] + _screwdriverData.Parameters[ScrewdriverParameterType.LengthOuterPartRod].MinValue + " - "
-                        + _screwdriverData.Parameters[ScrewdriverParameterType.LengthOuterPartRod].MaxValue + " mm.)";
-                    GroupBoxLengthOfHandle.Text = _groupBoxTextBegin[3] + _groupBoxTextEndDisable;
-                    GroupBoxLengthOfInnerPartOfRod.Text = _groupBoxTextBegin[4] + _groupBoxTextEndDisable;
                 }
                 else if (_errorKey == ScrewdriverParameterType.LengthOuterPartRod)
                 {
                     TextBoxLengthOfOuterPartOfRod.BackColor = _colorError;
                     TextBoxLengthOfInnerPartOfRod.Enabled = false;
-                    GroupBoxTipRodHeight.Text = _groupBoxTextBegin[0] + _screwdriverData.Parameters[ScrewdriverParameterType.TipRodHeight].MinValue + " - "
-                        + _screwdriverData.Parameters[ScrewdriverParameterType.TipRodHeight].MaxValue + " mm.)";
-                    GroupBoxWidestPartOfHandle.Text = _groupBoxTextBegin[1] + _screwdriverData.Parameters[ScrewdriverParameterType.WidestPartHandle].MinValue + " - "
-                        + _screwdriverData.Parameters[ScrewdriverParameterType.WidestPartHandle].MaxValue + " mm.)";
-                    GroupBoxLengthOfOuterPartOfRod.Text = _groupBoxTextBegin[2] + _screwdriverData.Parameters[ScrewdriverParameterType.LengthOuterPartRod].MinValue + " - "
-                        + _screwdriverData.Parameters[ScrewdriverParameterType.LengthOuterPartRod].MaxValue + " mm.)";
-                    GroupBoxLengthOfHandle.Text = _groupBoxTextBegin[3] + _screwdriverData.Parameters[ScrewdriverParameterType.LengthHandle].MinValue + " - "
-                        + _screwdriverData.Parameters[ScrewdriverParameterType.LengthHandle].MaxValue + " mm.)";
-                    GroupBoxLengthOfInnerPartOfRod.Text = _groupBoxTextBegin[4] + _groupBoxTextEndDisable;
                 }
                 else if (_errorKey == ScrewdriverParameterType.LengthHandle)
                 {
                     TextBoxLengthOfHandle.BackColor = _colorError;
                     TextBoxLengthOfInnerPartOfRod.Enabled = false;
-                    GroupBoxTipRodHeight.Text = _groupBoxTextBegin[0] + _screwdriverData.Parameters[ScrewdriverParameterType.TipRodHeight].MinValue + " - "
-                        + _screwdriverData.Parameters[ScrewdriverParameterType.TipRodHeight].MaxValue + " mm.)";
-                    GroupBoxWidestPartOfHandle.Text = _groupBoxTextBegin[1] + _screwdriverData.Parameters[ScrewdriverParameterType.WidestPartHandle].MinValue + " - "
-                        + _screwdriverData.Parameters[ScrewdriverParameterType.WidestPartHandle].MaxValue + " mm.)";
-                    GroupBoxLengthOfOuterPartOfRod.Text = _groupBoxTextBegin[2] + _screwdriverData.Parameters[ScrewdriverParameterType.LengthOuterPartRod].MinValue + " - "
-                        + _screwdriverData.Parameters[ScrewdriverParameterType.LengthOuterPartRod].MaxValue + " mm.)";
-                    GroupBoxLengthOfHandle.Text = _groupBoxTextBegin[3] + _screwdriverData.Parameters[ScrewdriverParameterType.LengthHandle].MinValue + " - "
-                        + _screwdriverData.Parameters[ScrewdriverParameterType.LengthHandle].MaxValue + " mm.)";
-                    GroupBoxLengthOfInnerPartOfRod.Text = _groupBoxTextBegin[4] + _groupBoxTextEndDisable;
                 }
                 else if (_errorKey == ScrewdriverParameterType.LengthInnerPartRod)
                 {
                     TextBoxLengthOfInnerPartOfRod.BackColor = _colorError;
-                    GroupBoxTipRodHeight.Text = _groupBoxTextBegin[0] + _screwdriverData.Parameters[ScrewdriverParameterType.TipRodHeight].MinValue + " - "
-                        + _screwdriverData.Parameters[ScrewdriverParameterType.TipRodHeight].MaxValue + " mm.)";
-                    GroupBoxWidestPartOfHandle.Text = _groupBoxTextBegin[1] + _screwdriverData.Parameters[ScrewdriverParameterType.WidestPartHandle].MinValue + " - "
-                        + _screwdriverData.Parameters[ScrewdriverParameterType.WidestPartHandle].MaxValue + " mm.)";
-                    GroupBoxLengthOfOuterPartOfRod.Text = _groupBoxTextBegin[2] + _screwdriverData.Parameters[ScrewdriverParameterType.LengthOuterPartRod].MinValue + " - "
-                        + _screwdriverData.Parameters[ScrewdriverParameterType.LengthOuterPartRod].MaxValue + " mm.)";
-                    GroupBoxLengthOfHandle.Text = _groupBoxTextBegin[3] + _screwdriverData.Parameters[ScrewdriverParameterType.LengthHandle].MinValue + " - "
-                        + _screwdriverData.Parameters[ScrewdriverParameterType.LengthHandle].MaxValue + " mm.)";
-                    GroupBoxLengthOfInnerPartOfRod.Text = _groupBoxTextBegin[4] + _screwdriverData.Parameters[ScrewdriverParameterType.LengthInnerPartRod].MinValue + " - "
-                        + _screwdriverData.Parameters[ScrewdriverParameterType.LengthInnerPartRod].MaxValue + " mm.)";
                 }
-            }
-            else
-            {
-                GroupBoxTipRodHeight.Text = _groupBoxTextBegin[0] + _screwdriverData.Parameters[ScrewdriverParameterType.TipRodHeight].MinValue + " - "
-                        + _screwdriverData.Parameters[ScrewdriverParameterType.TipRodHeight].MaxValue + " mm.)";
-                GroupBoxWidestPartOfHandle.Text = _groupBoxTextBegin[1] + _screwdriverData.Parameters[ScrewdriverParameterType.WidestPartHandle].MinValue + " - "
-                    + _screwdriverData.Parameters[ScrewdriverParameterType.WidestPartHandle].MaxValue + " mm.)";
-                GroupBoxLengthOfOuterPartOfRod.Text = _groupBoxTextBegin[2] + _screwdriverData.Parameters[ScrewdriverParameterType.LengthOuterPartRod].MinValue + " - "
-                    + _screwdriverData.Parameters[ScrewdriverParameterType.LengthOuterPartRod].MaxValue + " mm.)";
-                GroupBoxLengthOfHandle.Text = _groupBoxTextBegin[3] + _screwdriverData.Parameters[ScrewdriverParameterType.LengthHandle].MinValue + " - "
-                    + _screwdriverData.Parameters[ScrewdriverParameterType.LengthHandle].MaxValue + " mm.)";
-                GroupBoxLengthOfInnerPartOfRod.Text = _groupBoxTextBegin[4] + _screwdriverData.Parameters[ScrewdriverParameterType.LengthInnerPartRod].MinValue + " - "
-                    + _screwdriverData.Parameters[ScrewdriverParameterType.LengthInnerPartRod].MaxValue + " mm.)";
             }
             return;
         }

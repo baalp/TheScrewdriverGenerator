@@ -64,7 +64,7 @@
             this.ButtonBuild.Location = new System.Drawing.Point(14, 474);
             this.ButtonBuild.Name = "ButtonBuild";
             this.ButtonBuild.Size = new System.Drawing.Size(400, 45);
-            this.ButtonBuild.TabIndex = 0;
+            this.ButtonBuild.TabIndex = 8;
             this.ButtonBuild.Text = "Build";
             this.ButtonBuild.UseVisualStyleBackColor = true;
             // 
@@ -104,7 +104,7 @@
             this.TextBoxLengthOfInnerPartOfRod.Location = new System.Drawing.Point(6, 23);
             this.TextBoxLengthOfInnerPartOfRod.Name = "TextBoxLengthOfInnerPartOfRod";
             this.TextBoxLengthOfInnerPartOfRod.Size = new System.Drawing.Size(388, 22);
-            this.TextBoxLengthOfInnerPartOfRod.TabIndex = 0;
+            this.TextBoxLengthOfInnerPartOfRod.TabIndex = 7;
             // 
             // GroupBoxLengthOfInnerPartOfRod
             // 
@@ -113,7 +113,7 @@
             this.GroupBoxLengthOfInnerPartOfRod.Location = new System.Drawing.Point(14, 333);
             this.GroupBoxLengthOfInnerPartOfRod.Name = "GroupBoxLengthOfInnerPartOfRod";
             this.GroupBoxLengthOfInnerPartOfRod.Size = new System.Drawing.Size(400, 55);
-            this.GroupBoxLengthOfInnerPartOfRod.TabIndex = 7;
+            this.GroupBoxLengthOfInnerPartOfRod.TabIndex = 5;
             this.GroupBoxLengthOfInnerPartOfRod.TabStop = false;
             this.GroupBoxLengthOfInnerPartOfRod.Text = "Length of inner part of rod: (Li, in mm, # - # mm)";
             // 
@@ -123,7 +123,7 @@
             this.TextBoxLengthOfHandle.Location = new System.Drawing.Point(6, 23);
             this.TextBoxLengthOfHandle.Name = "TextBoxLengthOfHandle";
             this.TextBoxLengthOfHandle.Size = new System.Drawing.Size(388, 22);
-            this.TextBoxLengthOfHandle.TabIndex = 0;
+            this.TextBoxLengthOfHandle.TabIndex = 6;
             // 
             // GroupBoxLengthOfHandle
             // 
@@ -132,7 +132,7 @@
             this.GroupBoxLengthOfHandle.Location = new System.Drawing.Point(14, 267);
             this.GroupBoxLengthOfHandle.Name = "GroupBoxLengthOfHandle";
             this.GroupBoxLengthOfHandle.Size = new System.Drawing.Size(400, 55);
-            this.GroupBoxLengthOfHandle.TabIndex = 8;
+            this.GroupBoxLengthOfHandle.TabIndex = 4;
             this.GroupBoxLengthOfHandle.TabStop = false;
             this.GroupBoxLengthOfHandle.Text = "Length of handle: (Lh, in mm, # - # mm)";
             // 
@@ -142,7 +142,7 @@
             this.TextBoxLengthOfOuterPartOfRod.Location = new System.Drawing.Point(6, 23);
             this.TextBoxLengthOfOuterPartOfRod.Name = "TextBoxLengthOfOuterPartOfRod";
             this.TextBoxLengthOfOuterPartOfRod.Size = new System.Drawing.Size(388, 22);
-            this.TextBoxLengthOfOuterPartOfRod.TabIndex = 0;
+            this.TextBoxLengthOfOuterPartOfRod.TabIndex = 5;
             // 
             // GroupBoxLengthOfOuterPartOfRod
             // 
@@ -151,7 +151,7 @@
             this.GroupBoxLengthOfOuterPartOfRod.Location = new System.Drawing.Point(14, 201);
             this.GroupBoxLengthOfOuterPartOfRod.Name = "GroupBoxLengthOfOuterPartOfRod";
             this.GroupBoxLengthOfOuterPartOfRod.Size = new System.Drawing.Size(400, 55);
-            this.GroupBoxLengthOfOuterPartOfRod.TabIndex = 9;
+            this.GroupBoxLengthOfOuterPartOfRod.TabIndex = 3;
             this.GroupBoxLengthOfOuterPartOfRod.TabStop = false;
             this.GroupBoxLengthOfOuterPartOfRod.Text = "Length of outer part of rod: (Lo, in mm, # - # mm)";
             // 
@@ -161,7 +161,7 @@
             this.TextBoxWidestPartOfHandle.Location = new System.Drawing.Point(6, 23);
             this.TextBoxWidestPartOfHandle.Name = "TextBoxWidestPartOfHandle";
             this.TextBoxWidestPartOfHandle.Size = new System.Drawing.Size(388, 22);
-            this.TextBoxWidestPartOfHandle.TabIndex = 0;
+            this.TextBoxWidestPartOfHandle.TabIndex = 4;
             // 
             // GroupBoxWidestPartOfHandle
             // 
@@ -170,7 +170,7 @@
             this.GroupBoxWidestPartOfHandle.Location = new System.Drawing.Point(14, 135);
             this.GroupBoxWidestPartOfHandle.Name = "GroupBoxWidestPartOfHandle";
             this.GroupBoxWidestPartOfHandle.Size = new System.Drawing.Size(400, 55);
-            this.GroupBoxWidestPartOfHandle.TabIndex = 10;
+            this.GroupBoxWidestPartOfHandle.TabIndex = 2;
             this.GroupBoxWidestPartOfHandle.TabStop = false;
             this.GroupBoxWidestPartOfHandle.Text = "Widest part of handle: (D, in mm, # - # mm)";
             // 
@@ -180,7 +180,7 @@
             this.TextBoxTipRodHeight.Location = new System.Drawing.Point(6, 23);
             this.TextBoxTipRodHeight.Name = "TextBoxTipRodHeight";
             this.TextBoxTipRodHeight.Size = new System.Drawing.Size(388, 22);
-            this.TextBoxTipRodHeight.TabIndex = 0;
+            this.TextBoxTipRodHeight.TabIndex = 3;
             // 
             // GroupBoxTipRodHeight
             // 
@@ -189,7 +189,7 @@
             this.GroupBoxTipRodHeight.Location = new System.Drawing.Point(14, 69);
             this.GroupBoxTipRodHeight.Name = "GroupBoxTipRodHeight";
             this.GroupBoxTipRodHeight.Size = new System.Drawing.Size(400, 55);
-            this.GroupBoxTipRodHeight.TabIndex = 11;
+            this.GroupBoxTipRodHeight.TabIndex = 1;
             this.GroupBoxTipRodHeight.TabStop = false;
             this.GroupBoxTipRodHeight.Text = "Tip rod height: (H, in mm, 0.1 - 10 mm)";
             // 
@@ -202,7 +202,7 @@
             this.GroupBoxTypeOfTip.Location = new System.Drawing.Point(14, 12);
             this.GroupBoxTypeOfTip.Name = "GroupBoxTypeOfTip";
             this.GroupBoxTypeOfTip.Size = new System.Drawing.Size(400, 46);
-            this.GroupBoxTypeOfTip.TabIndex = 12;
+            this.GroupBoxTypeOfTip.TabIndex = 0;
             this.GroupBoxTypeOfTip.TabStop = false;
             this.GroupBoxTypeOfTip.Text = "Type of tip:";
             // 

@@ -47,6 +47,11 @@ namespace ScrewdriverGenerator.Model
             }
         }
 
+        public ScrewdriverParameterType ScrewdriverParameterType
+        {
+            get => _screwdriverParameterType;
+        }
+
         public ScrewdriverParameter
             (
             double value, 
