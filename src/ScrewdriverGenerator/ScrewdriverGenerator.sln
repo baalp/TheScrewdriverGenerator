@@ -4,8 +4,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 16.0.30225.117
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScrewdriverGenerator.View", "ScrewdriverGenerator.View\ScrewdriverGenerator.View.csproj", "{EB55094A-B589-439C-9C43-742F562FEBEF}"
+	ProjectSection(ProjectDependencies) = postProject
+		{59282823-06E2-4CDF-B0BD-BC0E605C9766} = {59282823-06E2-4CDF-B0BD-BC0E605C9766}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScrewdriverGenerator.Model", "ScrewdriverGenerator.Model\ScrewdriverGenerator.Model.csproj", "{72D1538C-0652-4BCF-8DB3-E7F4A78A8C64}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScrewdriverGenerator.Wrapper", "ScrewdriverGenerator.Wrapper\ScrewdriverGenerator.Wrapper.csproj", "{59282823-06E2-4CDF-B0BD-BC0E605C9766}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +26,10 @@ Global
 		{72D1538C-0652-4BCF-8DB3-E7F4A78A8C64}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{72D1538C-0652-4BCF-8DB3-E7F4A78A8C64}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{72D1538C-0652-4BCF-8DB3-E7F4A78A8C64}.Release|Any CPU.Build.0 = Release|Any CPU
+		{59282823-06E2-4CDF-B0BD-BC0E605C9766}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{59282823-06E2-4CDF-B0BD-BC0E605C9766}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{59282823-06E2-4CDF-B0BD-BC0E605C9766}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{59282823-06E2-4CDF-B0BD-BC0E605C9766}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

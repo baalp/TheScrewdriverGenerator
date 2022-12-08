@@ -67,6 +67,7 @@
             this.ButtonBuild.TabIndex = 8;
             this.ButtonBuild.Text = "Build";
             this.ButtonBuild.UseVisualStyleBackColor = true;
+            this.ButtonBuild.Click += new System.EventHandler(this.ButtonBuild_Click);
             // 
             // StatusStripError
             // 
@@ -105,6 +106,7 @@
             this.TextBoxLengthOfInnerPartOfRod.Name = "TextBoxLengthOfInnerPartOfRod";
             this.TextBoxLengthOfInnerPartOfRod.Size = new System.Drawing.Size(388, 22);
             this.TextBoxLengthOfInnerPartOfRod.TabIndex = 7;
+            this.TextBoxLengthOfInnerPartOfRod.Text = "15";
             // 
             // GroupBoxLengthOfInnerPartOfRod
             // 
@@ -124,6 +126,7 @@
             this.TextBoxLengthOfHandle.Name = "TextBoxLengthOfHandle";
             this.TextBoxLengthOfHandle.Size = new System.Drawing.Size(388, 22);
             this.TextBoxLengthOfHandle.TabIndex = 6;
+            this.TextBoxLengthOfHandle.Text = "25";
             // 
             // GroupBoxLengthOfHandle
             // 
@@ -143,6 +146,7 @@
             this.TextBoxLengthOfOuterPartOfRod.Name = "TextBoxLengthOfOuterPartOfRod";
             this.TextBoxLengthOfOuterPartOfRod.Size = new System.Drawing.Size(388, 22);
             this.TextBoxLengthOfOuterPartOfRod.TabIndex = 5;
+            this.TextBoxLengthOfOuterPartOfRod.Text = "30";
             // 
             // GroupBoxLengthOfOuterPartOfRod
             // 
@@ -162,6 +166,7 @@
             this.TextBoxWidestPartOfHandle.Name = "TextBoxWidestPartOfHandle";
             this.TextBoxWidestPartOfHandle.Size = new System.Drawing.Size(388, 22);
             this.TextBoxWidestPartOfHandle.TabIndex = 4;
+            this.TextBoxWidestPartOfHandle.Text = "4";
             // 
             // GroupBoxWidestPartOfHandle
             // 
@@ -181,6 +186,7 @@
             this.TextBoxTipRodHeight.Name = "TextBoxTipRodHeight";
             this.TextBoxTipRodHeight.Size = new System.Drawing.Size(388, 22);
             this.TextBoxTipRodHeight.TabIndex = 3;
+            this.TextBoxTipRodHeight.Text = "0,2";
             // 
             // GroupBoxTipRodHeight
             // 

@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using ScrewdriverGenerator.Model;
+using ScrewdriverGenerator.Wrapper;
 
 namespace ScrewdriverGenerator.View
 {
@@ -17,11 +18,10 @@ namespace ScrewdriverGenerator.View
         private Color _colorError = Color.FromArgb(255, 192, 192);
 
         private readonly ScrewdriverData _screwdriverData;
+        private readonly ScrewdriverBuilder _screwdriverBuilder;
 
         private readonly Dictionary<ScrewdriverParameterType, TextBox>
             _parameterToTextBox;
-        private readonly Dictionary<ScrewdriverParameterType, GroupBox>
-            _parameterToGroupBox;
 
         private int _selectedTypeOfTip = 0;
 
@@ -30,6 +30,7 @@ namespace ScrewdriverGenerator.View
             InitializeComponent();
 
             _screwdriverData = new ScrewdriverData();
+            _screwdriverBuilder = new ScrewdriverBuilder();
 
             //Dictonary зависимости типа данных от его TextBox для изменения его цвета.
             _parameterToTextBox = new Dictionary<ScrewdriverParameterType, TextBox>
@@ -49,11 +50,14 @@ namespace ScrewdriverGenerator.View
             TextBoxLengthOfInnerPartOfRod.KeyPress  += PreventInputWrongSymbols;
 
             // Проверка на ввод некорректных значений.
-            TextBoxTipRodHeight.TextChanged             += FindError;
-            TextBoxWidestPartOfHandle.TextChanged       += FindError;
-            TextBoxLengthOfOuterPartOfRod.TextChanged   += FindError;
-            TextBoxLengthOfHandle.TextChanged           += FindError;
-            TextBoxLengthOfInnerPartOfRod.TextChanged   += FindError;
+            RadioButtonTypeOfTipFlat.CheckedChanged         += FindError;
+            RadioButtonTypeOfTipCross.CheckedChanged        += FindError;
+            RadioButtonTypeOfTipTriangular.CheckedChanged   += FindError;
+            TextBoxTipRodHeight.TextChanged                 += FindError;
+            TextBoxWidestPartOfHandle.TextChanged           += FindError;
+            TextBoxLengthOfOuterPartOfRod.TextChanged       += FindError;
+            TextBoxLengthOfHandle.TextChanged               += FindError;
+            TextBoxLengthOfInnerPartOfRod.TextChanged       += FindError;
             Load += FindError;
         }
 
@@ -140,7 +144,7 @@ namespace ScrewdriverGenerator.View
                 StatusStripError.BackColor = _colorError;
                 ToolStripStatusLabelError.Text = _errorValue;
                 ButtonBuild.Enabled = false;
-                ButtonBuild.Text = "Correct any errors to build a model";
+                ButtonBuild.Text = "Correct all errors to build a model";
 
                 if (_errorKey == ScrewdriverParameterType.TipRodHeight)
                 {
@@ -187,6 +191,11 @@ namespace ScrewdriverGenerator.View
         private void RadioButtonTypeOfTipTriangular_CheckedChanged(object sender, EventArgs e)
         {
             _selectedTypeOfTip = RadioButtonTypeOfTipTriangular.TabIndex;
+        }
+
+        private void ButtonBuild_Click(object sender, EventArgs e)
+        {
+            _screwdriverBuilder.BuildScrewdriver(_screwdriverData);
         }
     }
 }
