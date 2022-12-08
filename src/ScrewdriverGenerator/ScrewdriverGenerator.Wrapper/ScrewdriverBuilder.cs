@@ -105,7 +105,7 @@ namespace ScrewdriverGenerator.Wrapper
 					//Плоскость для создания наконечника стержня
 					ksEntity sketchTipShapeGenerator = _kompasBuilder.CreateSketch
 						(_ksPartRod, _kompasBuilder.CreateOffsetPlane
-						(_ksPartHandle, ksObj3dTypeEnum.o3d_planeYOZ, -Lo), 
+						(_ksPartRod, ksObj3dTypeEnum.o3d_planeYOZ, -Lo), 
 						out var sketchTipShapeGeneratorDefinition);
 					ksDocument2D = sketchTipShapeGeneratorDefinition.BeginEdit();
 					_kompasBuilder.CreateRectangle
@@ -135,7 +135,7 @@ namespace ScrewdriverGenerator.Wrapper
 					//Квадраты - вырезы для создания крестового наконечника
 					ksEntity sketchTipShapeCrossGenerator = _kompasBuilder.CreateSketch
 						(_ksPartRod, _kompasBuilder.CreateOffsetPlane
-						(_ksPartHandle, ksObj3dTypeEnum.o3d_planeYOZ, -Lo), 
+						(_ksPartRod, ksObj3dTypeEnum.o3d_planeYOZ, -Lo), 
 						out var sketchTipShapeCrossGeneratorDefinition);
 					ksDocument2D = sketchTipShapeCrossGeneratorDefinition.BeginEdit();
 					_kompasBuilder.CreateRectangle
@@ -157,7 +157,7 @@ namespace ScrewdriverGenerator.Wrapper
 					//Три треугольника - вырезы для создания треугольного наконечника
 					ksEntity sketchTipShapeTriangleGenerator = _kompasBuilder.CreateSketch
 						(_ksPartRod, _kompasBuilder.CreateOffsetPlane
-						(_ksPartHandle, ksObj3dTypeEnum.o3d_planeYOZ, -Lo), 
+						(_ksPartRod, ksObj3dTypeEnum.o3d_planeYOZ, -Lo), 
 						out var sketchTipShapeTriangleGeneratorDefinition);
 					ksDocument2D = sketchTipShapeTriangleGeneratorDefinition.BeginEdit();
 					//Первый треугольник
