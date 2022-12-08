@@ -14,15 +14,35 @@ namespace ScrewdriverGenerator.View
 {
     public partial class MainForm : Form
     {
+        /// <summary>
+		/// Цвет, который принимают элемента интерфейса при отсутствии ошибок.
+		/// </summary>
         private Color _colorDefault = Color.FromArgb(255, 255, 255);
+
+        /// <summary>
+		/// Цвет, который принимают элемента интерфейса при нахождении ошибок.
+		/// </summary>
         private Color _colorError = Color.FromArgb(255, 192, 192);
 
+        /// <summary>
+		/// Объект данных об отвертке.
+		/// </summary>
         private readonly ScrewdriverData _screwdriverData;
+
+        /// <summary>
+		/// Объект, строящий отвертку в Компас-3D.
+		/// </summary>
         private readonly ScrewdriverBuilder _screwdriverBuilder;
 
+        /// <summary>
+		/// Библиотека, хранящая связь между TextBox и типами данных отвертки.
+		/// </summary>
         private readonly Dictionary<ScrewdriverParameterType, TextBox>
             _parameterToTextBox;
 
+        /// <summary>
+		/// Переменная, хранящая выбранный тип наконечника отвертки.
+		/// </summary>
         private int _selectedTypeOfTip = 0;
 
         public MainForm()
@@ -88,6 +108,11 @@ namespace ScrewdriverGenerator.View
             }
         }
 
+        /// <summary>
+        /// Поиск некорректных данных в TextBox и их запись в ScrewdriverData.
+        /// </summary>
+        /// <param name="sender">Инициатор события.</param>
+        /// <param name="e">Нажатая на клавиатуре клавиша.</param>
         private void FindError(object sender, EventArgs e)
         {
             double[] _inputValues = new double[6];
@@ -117,6 +142,10 @@ namespace ScrewdriverGenerator.View
             UpdateGUIBecauseFindError(_screwdriverData.Errors);
         }
 
+        /// <summary>
+        /// обновление внешнего вида GUI при изменении статуса ошибки.
+        /// </summary>
+        /// <param name="_errors">Библиотека, хранящая ошибку и тип данных отвертки с ней.</param>
         private void UpdateGUIBecauseFindError(Dictionary<ScrewdriverParameterType, string> _errors)
         {
             foreach (var keyValue in _parameterToTextBox)
@@ -125,17 +154,24 @@ namespace ScrewdriverGenerator.View
                 keyValue.Value.BackColor = _colorDefault;
             }
 
+            //Обнуление статуса ошибки
             ButtonBuild.Enabled = true;
             ButtonBuild.Text = "Build";
             StatusStripError.BackColor = _colorDefault;
             ToolStripStatusLabelError.Text = "No errors found.";
 
-            GroupBoxTipRodHeight.Text = _screwdriverData.GetGroupBoxDescription(_screwdriverData.Parameters[ScrewdriverParameterType.TipRodHeight]);
-            GroupBoxWidestPartOfHandle.Text = _screwdriverData.GetGroupBoxDescription(_screwdriverData.Parameters[ScrewdriverParameterType.WidestPartHandle]);
-            GroupBoxLengthOfOuterPartOfRod.Text = _screwdriverData.GetGroupBoxDescription(_screwdriverData.Parameters[ScrewdriverParameterType.LengthOuterPartRod]);
-            GroupBoxLengthOfHandle.Text = _screwdriverData.GetGroupBoxDescription(_screwdriverData.Parameters[ScrewdriverParameterType.LengthHandle]);
-            GroupBoxLengthOfInnerPartOfRod.Text = _screwdriverData.GetGroupBoxDescription(_screwdriverData.Parameters[ScrewdriverParameterType.LengthInnerPartRod]);
+            GroupBoxTipRodHeight.Text = _screwdriverData.GetGroupBoxDescription
+                (_screwdriverData.Parameters[ScrewdriverParameterType.TipRodHeight]);
+            GroupBoxWidestPartOfHandle.Text = _screwdriverData.GetGroupBoxDescription
+                (_screwdriverData.Parameters[ScrewdriverParameterType.WidestPartHandle]);
+            GroupBoxLengthOfOuterPartOfRod.Text = _screwdriverData.GetGroupBoxDescription
+                (_screwdriverData.Parameters[ScrewdriverParameterType.LengthOuterPartRod]);
+            GroupBoxLengthOfHandle.Text = _screwdriverData.GetGroupBoxDescription
+                (_screwdriverData.Parameters[ScrewdriverParameterType.LengthHandle]);
+            GroupBoxLengthOfInnerPartOfRod.Text = _screwdriverData.GetGroupBoxDescription
+                (_screwdriverData.Parameters[ScrewdriverParameterType.LengthInnerPartRod]);
 
+            //Добавление статуса ошибки при ее наличии
             if (_errors.Any())
             {
                 var _errorKey = _errors.ElementAt(0).Key;

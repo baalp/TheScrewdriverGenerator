@@ -52,6 +52,17 @@ namespace ScrewdriverGenerator.Model
             get => _screwdriverParameterType;
         }
 
+        /// <summary>
+        /// Один из параметров данных отвертки.
+        /// </summary>
+        /// <param name="value">Значение параметра.</param>
+        /// <param name="minValue">Минимально возможное значение параметра.</param>
+        /// <param name="maxValue">Максимально возможное значение параметра.</param>
+        /// <param name="errorMessageAttachment">
+        /// Название параметра, используемое в сообщениях ошибки.</param>
+        /// <param name="screwdriverParameterType">Тип параметра отвертки.</param>
+        /// <param name="errors">
+        /// Библиотека с ошибками, возникшими при заполнении параметра.</param>
         public ScrewdriverParameter
             (
             double value, 
@@ -75,6 +86,11 @@ namespace ScrewdriverGenerator.Model
             Value = value;
         }
 
+        /// <summary>
+        /// Проверка корректности параметра на основе переменных минимума и максимума.
+        /// </summary>
+        /// <param name="value">Значение, подаваемое в параметр.</param>
+        /// <returns>True - значение можно добавить в параметр, false - нельзя.</returns>
         private bool CheckRange(double value)
         {
             if (value == -1.0)

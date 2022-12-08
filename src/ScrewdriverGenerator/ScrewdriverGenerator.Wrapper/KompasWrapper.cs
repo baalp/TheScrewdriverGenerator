@@ -16,6 +16,9 @@ namespace ScrewdriverGenerator.Wrapper
         /// </summary>
         public KompasObject _kompasObject;
 
+        /// <summary>
+        /// Запуск программы Компас-3D.
+        /// </summary>
         public void StartKompas()
         {
             try
@@ -44,7 +47,9 @@ namespace ScrewdriverGenerator.Wrapper
         /// <summary>
         /// Создание документа в Компас-3D.
         /// </summary>
-        public ksDocument3D CreateDocument()
+        /// <param name="invisible">Видимость создания документа</param>
+        /// <param name="typeDoc">Тип документа: true - Деталь, false - сборка</param>
+        public ksDocument3D CreateDocument(bool invisible, bool typeDoc)
         {
             try
             {
@@ -63,11 +68,16 @@ namespace ScrewdriverGenerator.Wrapper
         /// <summary>
         /// Установка свойств детали: цвета и имени.
         /// </summary>
-        public ksPart SetDetailProperties(ksPart _ksPart, ksDocument3D _ksDocument3D)
+        /// <param name="_ksPart">Деталь, свойства которой устанавливается этой функцией.</param>
+        /// <param name="_ksDocument3D">Документ, в котором находится эта деталь.</param>
+        /// <param name="name">Имя детали.</param>
+        /// <param name="color">Цвет детали: R + G*256 + B*65535</param>
+        public ksPart SetDetailProperties
+            (ksPart _ksPart, ksDocument3D _ksDocument3D, string name, int color)
         {
             _ksPart = (ksPart)_ksDocument3D.GetPart((short)Part_Type.pTop_Part);
-            _ksPart.name = "Screwdriver";
-            _ksPart.SetAdvancedColor(14211288, 0.5, 0.6,
+            _ksPart.name = name;
+            _ksPart.SetAdvancedColor(color, 0.5, 0.6,
                 0.8, 0.8, 1, 0.5);
             _ksPart.Update();
             return _ksPart;

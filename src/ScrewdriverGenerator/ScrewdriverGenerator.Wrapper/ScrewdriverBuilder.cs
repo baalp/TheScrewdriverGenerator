@@ -10,91 +10,155 @@ using Kompas6Constants;
 
 namespace ScrewdriverGenerator.Wrapper
 {
-    public class ScrewdriverBuilder
-    {
-        private readonly KompasWrapper _kompasWrapper = new KompasWrapper();
+	public class ScrewdriverBuilder
+	{
+		/// <summary>
+		/// Объект создания связи с KOMPAS API.
+		/// </summary>
+		private readonly KompasWrapper _kompasWrapper = new KompasWrapper();
 
+		/// <summary>
+		/// Объект с функциями строительства деталей и сборок.
+		/// </summary>
+		private KompasBuilder _kompasBuilder = new KompasBuilder();
+
+		/// <summary>
+		/// Объект данных об отвертке.
+		/// </summary>
 		private ScrewdriverData _screwdriverData = new ScrewdriverData();
 
 		/// <summary>
-		/// Деталь.
+		/// Деталь стержня отвертки.
 		/// </summary>
-		private ksPart _ksPart;
+		private ksPart _ksPartRod;
 
+		/// <summary>
+		/// Деталь рукоятки отвертки.
+		/// </summary>
+		private ksPart _ksPartHandle;
+
+		/// <summary>
+		/// Объект документа.
+		/// </summary>
 		private ksDocument3D _ksDocument3D;
 
+		/// <summary>
+		/// Главная функция, создающая детали для отвертки и их сборку.
+		/// </summary>
+		/// <param name="screwdriverData">Объект с информацией о создаваемой отвертке.</param>
 		public void BuildScrewdriver(ScrewdriverData screwdriverData)
-        {
+		{
 			_screwdriverData = screwdriverData;
-			_kompasWrapper.StartKompas();
-			_ksDocument3D = _kompasWrapper.CreateDocument();
-            _ksPart = _kompasWrapper.SetDetailProperties(_ksPart, _ksDocument3D);
 			double H = _screwdriverData.Parameters[ScrewdriverParameterType.TipRodHeight].Value;
+			double D = _screwdriverData.Parameters[ScrewdriverParameterType.WidestPartHandle].Value;
 			double Lo = _screwdriverData.Parameters[ScrewdriverParameterType.LengthOuterPartRod].Value;
+			double Lh = _screwdriverData.Parameters[ScrewdriverParameterType.LengthHandle].Value;
 			double Li = _screwdriverData.Parameters[ScrewdriverParameterType.LengthInnerPartRod].Value;
-			BuildRod(H, Lo, Li);
-        }
 
+			_kompasWrapper.StartKompas();
+			_ksDocument3D = _kompasWrapper.CreateDocument(true, true);
+			_ksPartRod = _kompasWrapper.SetDetailProperties
+				(_ksPartRod, _ksDocument3D, "ScrewdriverRod", 4737096);
+			BuildRod(H, Lo, Li);
+			_ksDocument3D = _kompasWrapper.CreateDocument(true, true);
+			_ksPartHandle = _kompasWrapper.SetDetailProperties
+				(_ksPartHandle, _ksDocument3D, "ScrewdriverHandle", 3381759);
+			BuildHandle(H, D, Lh);
+			CreateAssembly();
+		}
+
+		/// <summary>
+		/// Функция, создающая деталь стержня отвертки.
+		/// </summary>
+		/// <param name="H">Толщина наконечника стержня отвертки.</param>
+		/// <param name="Lo">Длина внешней части отвертки.</param>
+		/// <param name="Li">Длина внутренней части отвертки.</param>
 		private void BuildRod(double H, double Lo, double Li)
-        {
+		{
 			//Закрепляющая часть
 			ksEntity planeYOZ =
-				_ksPart.GetDefaultEntity((short)ksObj3dTypeEnum.o3d_planeYOZ);
-			ksEntity sketchInnerPartRod = CreateSketch(planeYOZ, out var sketchInnerPartRodDefinition);
+				_ksPartRod.GetDefaultEntity((short)ksObj3dTypeEnum.o3d_planeYOZ);
+			ksEntity sketchInnerPartRod = _kompasBuilder.CreateSketch
+				(_ksPartRod, planeYOZ, out var sketchInnerPartRodDefinition);
 			ksDocument2D ksDocument2D = sketchInnerPartRodDefinition.BeginEdit();
-			int regularPolygon = CreateRegularPolygon(ksDocument2D, 6, 0, 0, 0, H * 5, true);
+			int regularPolygon = _kompasBuilder.CreateRegularPolygon
+				(_kompasWrapper._kompasObject, ksDocument2D, 6, 0, 0, 0, H * 5, true);
 			sketchInnerPartRodDefinition.EndEdit();
-			CreateBaseExtrusion(sketchInnerPartRod, true, Direction_Type.dtNormal, Li);
-			
+			_kompasBuilder.CreateBaseExtrusion
+				(_ksPartRod, sketchInnerPartRod, true, Direction_Type.dtNormal, Li);
+
 			//Стержень
-			ksEntity sketchOuterPartRod = CreateSketch(planeYOZ, out var sketchOuterPartRodDefinition);
+			ksEntity sketchOuterPartRod = _kompasBuilder.CreateSketch
+				(_ksPartRod, planeYOZ, out var sketchOuterPartRodDefinition);
 			ksDocument2D = sketchOuterPartRodDefinition.BeginEdit();
 			//CreateCircle(ksDocument2D, H * 4, 0, 0);
 			ksDocument2D.ksCircle(0, 0, H * 2, (short)ksCurveStyleEnum.ksCSNormal);
 			sketchOuterPartRodDefinition.EndEdit();
-			CreateBaseExtrusion(sketchOuterPartRod, false, Direction_Type.dtReverse, Lo);
-			
+			_kompasBuilder.CreateBaseExtrusion
+				(_ksPartRod, sketchOuterPartRod, false, Direction_Type.dtReverse, Lo);
+
 			//Создание наконечника
 			switch (_screwdriverData.Parameters[ScrewdriverParameterType.TipType].Value)
-            {
+			{
 				//Плоский наконечник
 				case 0:
 					//Плоскость для создания наконечника стержня
-					ksEntity sketchTipShapeGenerator = CreateSketch(CreateOffsetPlane(-Lo, ksObj3dTypeEnum.o3d_planeYOZ), out var sketchTipShapeGeneratorDefinition);
+					ksEntity sketchTipShapeGenerator = _kompasBuilder.CreateSketch
+						(_ksPartRod, _kompasBuilder.CreateOffsetPlane
+						(_ksPartHandle, ksObj3dTypeEnum.o3d_planeYOZ, -Lo), 
+						out var sketchTipShapeGeneratorDefinition);
 					ksDocument2D = sketchTipShapeGeneratorDefinition.BeginEdit();
-					CreateRectangle(ksDocument2D, H * 8, H * 8, H * 0.5, -H * 4);
-					CreateRectangle(ksDocument2D, H * 8, H * 8, -H * 8.5, -H * 4);
+					_kompasBuilder.CreateRectangle
+						(_kompasWrapper._kompasObject, ksDocument2D, H * 8, H * 8, H * 0.5, -H * 4);
+					_kompasBuilder.CreateRectangle
+						(_kompasWrapper._kompasObject, ksDocument2D, H * 8, H * 8, -H * 8.5, -H * 4);
 					sketchTipShapeGeneratorDefinition.EndEdit();
-					CutExtrusion(sketchTipShapeGenerator, H * 10, false, 10, true);
+					_kompasBuilder.CutExtrusion
+						(_ksPartRod, sketchTipShapeGenerator, false, Direction_Type.dtReverse, H * 10, 10, true);
 					break;
 
 				//Крестовой наконечник
 				case 1:
 					//Треугольник - усечение для наконечника
-					ksEntity planeXOZ = _ksPart.GetDefaultEntity((short)ksObj3dTypeEnum.o3d_planeXOZ);
-					ksEntity sketchCrossTipAngle = CreateSketch(planeXOZ, out var sketchCrossTipAngleDefinition);
+					ksEntity planeXOZ = _ksPartRod.GetDefaultEntity
+						((short)ksObj3dTypeEnum.o3d_planeXOZ);
+					ksEntity sketchCrossTipAngle = _kompasBuilder.CreateSketch
+						(_ksPartRod, planeXOZ, out var sketchCrossTipAngleDefinition);
 					ksDocument2D = sketchCrossTipAngleDefinition.BeginEdit();
 					ksDocument2D.ksLineSeg(Lo, 0, Lo, H * 2, 1);
 					ksDocument2D.ksLineSeg(Lo - H, H * 2, Lo, H * 2, 1);
 					ksDocument2D.ksLineSeg(Lo - H, H * 2, Lo, 0, 1);
 					ksDocument2D.ksLineSeg(0, 0, 100, 0, 3);
 					sketchCrossTipAngleDefinition.EndEdit();
-					CutRotated(sketchCrossTipAngle, 60, false);
+					_kompasBuilder.CutRotated
+						(_ksPartRod, sketchCrossTipAngle, false, Direction_Type.dtNormal, 360);
 					//Квадраты - вырезы для создания крестового наконечника
-					ksEntity sketchTipShapeCrossGenerator = CreateSketch(CreateOffsetPlane(-Lo, ksObj3dTypeEnum.o3d_planeYOZ), out var sketchTipShapeCrossGeneratorDefinition);
+					ksEntity sketchTipShapeCrossGenerator = _kompasBuilder.CreateSketch
+						(_ksPartRod, _kompasBuilder.CreateOffsetPlane
+						(_ksPartHandle, ksObj3dTypeEnum.o3d_planeYOZ, -Lo), 
+						out var sketchTipShapeCrossGeneratorDefinition);
 					ksDocument2D = sketchTipShapeCrossGeneratorDefinition.BeginEdit();
-					CreateRectangle(ksDocument2D, H * 4, H * 4, H * 0.5, H * 0.5);
-					CreateRectangle(ksDocument2D, H * 4, H * 4, -H * 4.5, H * 0.5);
-					CreateRectangle(ksDocument2D, H * 4, H * 4, -H * 4.5, -H * 4.5);
-					CreateRectangle(ksDocument2D, H * 4, H * 4, H * 0.5, -H * 4.5);
+					_kompasBuilder.CreateRectangle
+						(_kompasWrapper._kompasObject, ksDocument2D, H * 4, H * 4, H * 0.5, H * 0.5);
+					_kompasBuilder.CreateRectangle
+						(_kompasWrapper._kompasObject, ksDocument2D, H * 4, H * 4, -H * 4.5, H * 0.5);
+					_kompasBuilder.CreateRectangle
+						(_kompasWrapper._kompasObject, ksDocument2D, H * 4, H * 4, -H * 4.5, -H * 4.5);
+					_kompasBuilder.CreateRectangle
+						(_kompasWrapper._kompasObject, ksDocument2D, H * 4, H * 4, H * 0.5, -H * 4.5);
 					sketchTipShapeCrossGeneratorDefinition.EndEdit();
-					CutExtrusion(sketchTipShapeCrossGenerator, H * 10, false, 10, true);
+					_kompasBuilder.CutExtrusion
+						(_ksPartRod, sketchTipShapeCrossGenerator, false, 
+						Direction_Type.dtReverse, H * 10, 10, true);
 					break;
 
 				//Треугольный наконечник
 				case 2:
 					//Три треугольника - вырезы для создания треугольного наконечника
-					ksEntity sketchTipShapeTriangleGenerator = CreateSketch(CreateOffsetPlane(-Lo, ksObj3dTypeEnum.o3d_planeYOZ), out var sketchTipShapeTriangleGeneratorDefinition);
+					ksEntity sketchTipShapeTriangleGenerator = _kompasBuilder.CreateSketch
+						(_ksPartRod, _kompasBuilder.CreateOffsetPlane
+						(_ksPartHandle, ksObj3dTypeEnum.o3d_planeYOZ, -Lo), 
+						out var sketchTipShapeTriangleGeneratorDefinition);
 					ksDocument2D = sketchTipShapeTriangleGeneratorDefinition.BeginEdit();
 					//Первый треугольник
 					//Первый отрезок
@@ -174,179 +238,131 @@ namespace ScrewdriverGenerator.Wrapper
 					//Перпендикулярный отрезок
 					ksDocument2D.ksLineSeg
 						(
-						GetXorYbyRadiusAndAngle(true,  H * 10, 180, -H * Math.Sqrt(3) / 6, H / 2),
+						GetXorYbyRadiusAndAngle(true, H * 10, 180, -H * Math.Sqrt(3) / 6, H / 2),
 						GetXorYbyRadiusAndAngle(false, H * 10, 180, -H * Math.Sqrt(3) / 6, H / 2),
-						GetXorYbyRadiusAndAngle(true,  H * 10, 60,  -H * Math.Sqrt(3) / 6, H / 2),
-						GetXorYbyRadiusAndAngle(false, H * 10, 60,  -H * Math.Sqrt(3) / 6, H / 2),
+						GetXorYbyRadiusAndAngle(true, H * 10, 60, -H * Math.Sqrt(3) / 6, H / 2),
+						GetXorYbyRadiusAndAngle(false, H * 10, 60, -H * Math.Sqrt(3) / 6, H / 2),
 						1
 						);
 					sketchTipShapeTriangleGeneratorDefinition.EndEdit();
-					CutExtrusion(sketchTipShapeTriangleGenerator, H * 10, false, 10, true);
+					_kompasBuilder.CutExtrusion
+						(_ksPartRod, sketchTipShapeTriangleGenerator, false, 
+						Direction_Type.dtReverse, H * 10, 10, true);
 					break;
 			}
 		}
 
-		private double GetXorYbyRadiusAndAngle(bool isX, double radius, double angle, double x0 = 0, double y0 = 0)
-        {
+		/// <summary>
+		/// Функция, создающая деталь рукоятки отвертки.
+		/// </summary>
+		/// <param name="H">Толщина наконечника стержня отвертки.</param>
+		/// <param name="D">Наибольший диаметр обхвата рукоятки отвертки.</param>
+		/// <param name="Lh">Длина рукоятки отвертки.</param>
+		private void BuildHandle(double H, double D, double Lh)
+		{
+			//Создаем рукоять
+			ksEntity planeYOZ = _ksPartHandle.GetDefaultEntity((short)ksObj3dTypeEnum.o3d_planeYOZ);
+			ksEntity sketchHandle = _kompasBuilder.CreateSketch
+				(_ksPartHandle, planeYOZ, out var sketchHandleDefinition);
+			ksDocument2D ksDocument2D = sketchHandleDefinition.BeginEdit();
+			ksDocument2D.ksCircle(0, 0, D / 2, (short)ksCurveStyleEnum.ksCSNormal);
+			sketchHandleDefinition.EndEdit();
+			_kompasBuilder.CreateBaseExtrusion
+				(_ksPartHandle, sketchHandle, true, Direction_Type.dtNormal, Lh);
+
+			//Создаем отверстие под стержень
+			ksEntity sketchHandleHoleForRod = _kompasBuilder.CreateSketch
+				(_ksPartHandle, planeYOZ, out var sketchHandleHoleForRodDefinition);
+			ksDocument2D = sketchHandleHoleForRodDefinition.BeginEdit();
+			_kompasBuilder.CreateRegularPolygon
+				(_kompasWrapper._kompasObject, ksDocument2D, 6, 0, 0, 0, H * 5, true);
+			sketchHandleHoleForRodDefinition.EndEdit();
+			_kompasBuilder.CutExtrusion
+				(_ksPartHandle, sketchHandleHoleForRod, false, Direction_Type.dtReverse, Lh / 2);
+
+			//Создаем скругление на конце рукоятки эксизом треугольника
+			ksEntity planeXOZ = _ksPartHandle.GetDefaultEntity((short)ksObj3dTypeEnum.o3d_planeXOZ);
+			ksEntity sketchHandleEndAngle = _kompasBuilder.CreateSketch
+				(_ksPartHandle, planeXOZ, out var sketchHandleEndAngleDefinition);
+			ksDocument2D = sketchHandleEndAngleDefinition.BeginEdit();
+			ksDocument2D.ksLineSeg(-Lh, -D / 4, -Lh, -D / 2, 1);
+			ksDocument2D.ksLineSeg(-Lh, -D / 2, -Lh + D / 2, -D / 2, 1);
+			ksDocument2D.ksLineSeg(-Lh + D / 2, -D / 2, -Lh, -D / 4, 1);
+			ksDocument2D.ksLineSeg(0, 0, 100, 0, 3);
+			sketchHandleEndAngleDefinition.EndEdit();
+			_kompasBuilder.CutRotated
+				(_ksPartHandle, sketchHandleEndAngle, false, Direction_Type.dtNormal, 360);
+
+			//Создаем впадину в конце рукоятки
+			ksEntity sketchHandleStart = _kompasBuilder.CreateSketch
+				(_ksPartHandle, planeXOZ, out var sketchHandleStartDefinition);
+			ksDocument2D = sketchHandleStartDefinition.BeginEdit();
+			_kompasBuilder.CreateRectangle
+				(_kompasWrapper._kompasObject, ksDocument2D, Lh / 10 * 4, D / 8, -Lh / 10 * 4, -D / 2);
+			ksDocument2D.ksLineSeg(0, 0, -100, 0, 3);
+			sketchHandleStartDefinition.EndEdit();
+			_kompasBuilder.CutRotated
+				(_ksPartHandle, sketchHandleStart, true, Direction_Type.dtNormal, 360);
+
+			//Создаем переход между держащей частью и впадиной в конце рукоятки
+			ksEntity sketchHandleStartAngle = _kompasBuilder.CreateSketch
+				(_ksPartHandle, planeXOZ, out var sketchHandleStartAngleDefinition);
+			ksDocument2D = sketchHandleStartAngleDefinition.BeginEdit();
+			ksDocument2D.ksLineSeg(-Lh / 10 * 4, -D / 2, -Lh / 10 * 4 + -D / 2, -D / 2, 1);
+			ksDocument2D.ksLineSeg(-Lh / 10 * 4, -D / 2, -Lh / 10 * 4, -D / 8 * 3, 1);
+			ksDocument2D.ksLineSeg(-Lh / 10 * 4 + -D / 2, -D / 2, -Lh / 10 * 4, -D / 8 * 3, 1);
+			ksDocument2D.ksLineSeg(0, 0, -100, 0, 3);
+			sketchHandleStartAngleDefinition.EndEdit();
+			_kompasBuilder.CutRotated
+				(_ksPartHandle, sketchHandleStartAngle, true, Direction_Type.dtNormal, 360);
+
+			//Создаем неровную поверхность в держащей части рукоятки
+			ksEntity sketchHandleUnevenness = _kompasBuilder.CreateSketch
+				(_ksPartHandle, planeYOZ, out var sketchHandleUnevennessDefinition);
+			ksDocument2D = sketchHandleUnevennessDefinition.BeginEdit();
+			ksDocument2D.ksCircle(GetXorYbyRadiusAndAngle(true, D / 16 * 23, 0), 
+				GetXorYbyRadiusAndAngle(false, D / 16 * 23, 0), D, (short)ksCurveStyleEnum.ksCSNormal);
+			ksDocument2D.ksCircle(GetXorYbyRadiusAndAngle(true, D / 16 * 23, 60), 
+				GetXorYbyRadiusAndAngle(false, D / 16 * 23, 60), D, (short)ksCurveStyleEnum.ksCSNormal);
+			ksDocument2D.ksCircle(GetXorYbyRadiusAndAngle(true, D / 16 * 23, 120), 
+				GetXorYbyRadiusAndAngle(false, D / 16 * 23, 120), D, (short)ksCurveStyleEnum.ksCSNormal);
+			ksDocument2D.ksCircle(GetXorYbyRadiusAndAngle(true, D / 16 * 23, 180), 
+				GetXorYbyRadiusAndAngle(false, D / 16 * 23, 180), D, (short)ksCurveStyleEnum.ksCSNormal);
+			ksDocument2D.ksCircle(GetXorYbyRadiusAndAngle(true, D / 16 * 23, 240), 
+				GetXorYbyRadiusAndAngle(false, D / 16 * 23, 240), D, (short)ksCurveStyleEnum.ksCSNormal);
+			ksDocument2D.ksCircle(GetXorYbyRadiusAndAngle(true, D / 16 * 23, 300), 
+				GetXorYbyRadiusAndAngle(false, D / 16 * 23, 300), D, (short)ksCurveStyleEnum.ksCSNormal);
+			sketchHandleUnevennessDefinition.EndEdit();
+			_kompasBuilder.CutExtrusion(_ksPartHandle, sketchHandleUnevenness, false, 
+				Direction_Type.dtReverse, Lh);
+		}
+
+		/// <summary>
+		/// Функция, создающая сборку из делатей отвертки.
+		/// </summary>
+		private void CreateAssembly()
+		{
+		}
+
+		/// <summary>
+		/// Функция, рассчитывающая координату точки по ее расстоянию и углу от другой точки.
+		/// </summary>
+		/// <param name="isX">Рассчитывает ли функция X или Y: true - X, false - Y.</param>
+		/// <param name="radius">Расстояние между точками.</param>
+		/// <param name="angle">Угол, по которому точка исказилась относительно другой точки.</param>
+		/// <param name="x0">Положение по Х для первой точки.</param>
+		/// <param name="y0">Положение по Y для первой точки.</param>
+		private double GetXorYbyRadiusAndAngle(bool isX, double radius, double angle, 
+			double x0 = 0, double y0 = 0)
+		{
 			if (isX)
-            {
+			{
 				return x0 + radius * Math.Cos(angle * (Math.PI / 180.0));
-            }
+			}
 			else
-            {
+			{
 				return y0 + radius * Math.Sin(angle * (Math.PI / 180.0));
 			}
-        }
-
-		/// <summary>
-		/// Метод создания эскиза
-		/// </summary>
-		/// <param name="plane">Плоскость</param>
-		/// <param name="sketchDefinition">Параметры эскиза</param>
-		/// <returns>Указатель на эскиз</returns>
-		private ksEntity CreateSketch(ksEntity plane, out ksSketchDefinition sketchDefinition)
-		{
-			ksEntity sketch = _ksPart.NewEntity((short)ksObj3dTypeEnum.o3d_sketch);
-			sketchDefinition = sketch.GetDefinition();
-			sketchDefinition.SetPlane(plane);
-			sketch.Create();
-			return sketch;
-		}
-
-		/// <summary>
-		/// Метод постройки окружности
-		/// </summary>
-		/// <param name="document2D">Интерфейс графического документа</param>
-		/// <param name="count">Диаметр окружности</param>
-		private int CreateRegularPolygon(ksDocument2D document2D, int count,
-			double xCenter, double yCenter, double angle, double radius, bool describe)
-		{
-			//count, xCenter, yCenter, angle, radius, describe
-			KompasObject kompas = _kompasWrapper._kompasObject;
-			RegularPolygonParam regularPolygonParam =
-				kompas.GetParamStruct((short)StructType2DEnum.ko_RegularPolygonParam);
-			//RegularPolygonParam regularPolygonParam;
-			regularPolygonParam.count = count;
-			regularPolygonParam.xc = xCenter;
-			regularPolygonParam.yc = yCenter;
-			regularPolygonParam.ang = angle;
-			regularPolygonParam.radius = radius;
-			regularPolygonParam.describe = describe;
-			regularPolygonParam.style = (int)ksCurveStyleEnum.ksCSNormal;
-			return document2D.ksRegularPolygon(regularPolygonParam, (short)ksCurveStyleEnum.ksCSNormal);
-		}
-
-		/// <summary>
-		/// Метод создания выдавливанием
-		/// </summary>
-		/// <param name="direction_Type">Направление выдавливания</param>
-		/// <param name="length">Длина выдавливания</param>
-		/// <param name="sketch">Эскиз выдавливания</param>
-		private void CreateBaseExtrusion(ksEntity sketch, bool forward, Direction_Type direction_Type, double depth, double draftValue = 0, bool draftOutward = false)
-		{
-			ksEntity extrusion =
-				_ksPart.NewEntity((short)ksObj3dTypeEnum.o3d_baseExtrusion);
-			ksBaseExtrusionDefinition extrusionDefinition = extrusion.GetDefinition();
-
-			extrusionDefinition.directionType = (short)direction_Type;
-			extrusionDefinition.SetSideParam(forward, (short)ksEndTypeEnum.etBlind, depth, draftValue, draftOutward);
-			extrusionDefinition.SetSketch(sketch);
-			extrusion.Create();
-		}
-
-		/// <summary>
-		/// Вырезание выдавливанием по эскизу.
-		/// </summary>
-		/// <param name="sketch">Эскиз.</param>
-		/// <param name="height">Высота выдавливания.</param>
-		/// <param name="direction">Направление: true - прямое, false - обратное.</param>
-		public void CutExtrusion(ksEntity sketch, double height, bool direction, double draftValue = 0, bool draftOutward = false)
-		{
-			ksEntity entity = _ksPart.NewEntity((short)ksObj3dTypeEnum.o3d_cutExtrusion);
-			ksCutExtrusionDefinition definition = entity.GetDefinition();
-			if (direction)
-			{
-				definition.directionType = (short)Direction_Type.dtNormal;
-			}
-			else
-			{
-				definition.directionType = (short)Direction_Type.dtReverse;
-			}
-			definition.cut = true;
-			definition.SetSideParam(direction, (short)End_Type.etBlind, height, draftValue, draftOutward);
-			definition.SetSketch(sketch);
-			entity.Create();
-		}
-
-		/// <summary>
-		/// Вырезание выдавливанием вращение по эскизу.
-		/// </summary>
-		/// <param name="sketch">Эскиз.</param>
-		/// <param name="height">Высота выдавливания.</param>
-		/// <param name="direction">Направление: true - прямое, false - обратное.</param>
-		public void CutRotated(ksEntity sketch, double height, bool direction, double draftValue = 0, bool draftOutward = false)
-		{
-			ksEntity entity = _ksPart.NewEntity((short)ksObj3dTypeEnum.o3d_cutRotated);
-			ksCutRotatedDefinition definition = entity.GetDefinition();
-			if (direction)
-			{
-				definition.directionType = (short)Direction_Type.dtNormal;
-			}
-			else
-			{
-				definition.directionType = (short)Direction_Type.dtReverse;
-			}
-			definition.cut = true;
-			definition.SetSideParam(true, 360);
-			definition.directionType = (short)Direction_Type.dtNormal;
-			definition.SetSketch(sketch);
-			entity.Create();
-		}
-
-		/// <summary>
-		/// Метод создания смещённой плоскости
-		/// </summary>
-		/// <param name="offset">расстояние смещения</param>
-		/// <param name="plane">базовая плоскость</param>
-		/// <returns>Указатель на смещённую плоскость</returns>
-		private ksEntity CreateOffsetPlane(double offset, ksObj3dTypeEnum plane)
-		{
-			ksEntity defaultPlane =
-				_ksPart.GetDefaultEntity((short)plane);
-			ksEntity planeOffset =
-				_ksPart.NewEntity((short)ksObj3dTypeEnum.o3d_planeOffset);
-			ksPlaneOffsetDefinition planeOffsetDefinition = planeOffset.GetDefinition();
-
-			planeOffsetDefinition.direction = true;
-			planeOffsetDefinition.offset = offset;
-
-			planeOffsetDefinition.SetPlane(defaultPlane);
-
-			planeOffset.Create();
-			return planeOffset;
-		}
-
-		/// <summary>
-		/// Метод постройки прямоугольник
-		/// </summary>
-		/// <param name="document2D">Интерфейс графического документа</param>
-		/// <param name="width">Ширина квадрата</param>
-		/// <param name="height">Высота квадрата</param>
-		/// <param name="x">X начальной точки</param>
-		/// <param name="y">Y начальной точки</param>
-		/// <returns>Указатель на созданный прямоугольник</returns>
-		private int CreateRectangle(ksDocument2D document2D, double width,
-			double height, double x, double y)
-		{
-			KompasObject kompas = _kompasWrapper._kompasObject;
-			ksRectangleParam param =
-				kompas.GetParamStruct((short)StructType2DEnum.ko_RectangleParam);
-			param.x = x;
-			param.y = y;
-			param.height = height;
-			param.width = width;
-			param.style = (int)ksCurveStyleEnum.ksCSNormal;
-			return document2D.ksRectangle(param, 0);
 		}
 	}
 }
