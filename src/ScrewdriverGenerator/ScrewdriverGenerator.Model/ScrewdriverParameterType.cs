@@ -39,6 +39,11 @@ namespace ScrewdriverGenerator.Model
         /// <summary>
         /// Li – Длина внутренней части стержня
         /// </summary>
-        LengthInnerPartRod
+        LengthInnerPartRod,
+
+        /// <summary>
+        /// Lf – Длина закрепляющих крылышек
+        /// </summary>
+        LengthFixingWings
     }
 }

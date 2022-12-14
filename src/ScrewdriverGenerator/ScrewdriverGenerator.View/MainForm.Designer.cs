@@ -46,6 +46,9 @@
             this.RadioButtonTypeOfTipTriangular = new System.Windows.Forms.RadioButton();
             this.RadioButtonTypeOfTipCross = new System.Windows.Forms.RadioButton();
             this.PictureBoxParameterInformation = new System.Windows.Forms.PictureBox();
+            this.TextBoxLengthFixingWings = new System.Windows.Forms.TextBox();
+            this.GroupBoxLengthFixingWings = new System.Windows.Forms.GroupBox();
+            this.label1 = new System.Windows.Forms.Label();
             this.StatusStripError.SuspendLayout();
             this.GroupBoxLengthOfInnerPartOfRod.SuspendLayout();
             this.GroupBoxLengthOfHandle.SuspendLayout();
@@ -54,6 +57,7 @@
             this.GroupBoxTipRodHeight.SuspendLayout();
             this.GroupBoxTypeOfTip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PictureBoxParameterInformation)).BeginInit();
+            this.GroupBoxLengthFixingWings.SuspendLayout();
             this.SuspendLayout();
             // 
             // ButtonBuild
@@ -61,9 +65,9 @@
             this.ButtonBuild.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.ButtonBuild.Enabled = false;
             this.ButtonBuild.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.ButtonBuild.Location = new System.Drawing.Point(14, 474);
+            this.ButtonBuild.Location = new System.Drawing.Point(14, 484);
             this.ButtonBuild.Name = "ButtonBuild";
-            this.ButtonBuild.Size = new System.Drawing.Size(400, 45);
+            this.ButtonBuild.Size = new System.Drawing.Size(400, 35);
             this.ButtonBuild.TabIndex = 8;
             this.ButtonBuild.Text = "Build";
             this.ButtonBuild.UseVisualStyleBackColor = true;
@@ -247,11 +251,44 @@
             this.PictureBoxParameterInformation.TabIndex = 8;
             this.PictureBoxParameterInformation.TabStop = false;
             // 
+            // TextBoxLengthFixingWings
+            // 
+            this.TextBoxLengthFixingWings.Enabled = false;
+            this.TextBoxLengthFixingWings.Location = new System.Drawing.Point(6, 19);
+            this.TextBoxLengthFixingWings.Name = "TextBoxLengthFixingWings";
+            this.TextBoxLengthFixingWings.Size = new System.Drawing.Size(388, 22);
+            this.TextBoxLengthFixingWings.TabIndex = 7;
+            this.TextBoxLengthFixingWings.Text = "5";
+            // 
+            // GroupBoxLengthFixingWings
+            // 
+            this.GroupBoxLengthFixingWings.Controls.Add(this.label1);
+            this.GroupBoxLengthFixingWings.Controls.Add(this.TextBoxLengthFixingWings);
+            this.GroupBoxLengthFixingWings.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.GroupBoxLengthFixingWings.Location = new System.Drawing.Point(14, 399);
+            this.GroupBoxLengthFixingWings.Name = "GroupBoxLengthFixingWings";
+            this.GroupBoxLengthFixingWings.Size = new System.Drawing.Size(400, 69);
+            this.GroupBoxLengthFixingWings.TabIndex = 8;
+            this.GroupBoxLengthFixingWings.TabStop = false;
+            this.GroupBoxLengthFixingWings.Text = "Length of inner part of rod: (Li, in mm, # - # mm)";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.ForeColor = System.Drawing.SystemColors.GrayText;
+            this.label1.Location = new System.Drawing.Point(6, 46);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(385, 16);
+            this.label1.TabIndex = 9;
+            this.label1.Text = "Leave the value blank to avoid adding this element to the model";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(941, 558);
+            this.Controls.Add(this.GroupBoxLengthFixingWings);
             this.Controls.Add(this.GroupBoxTypeOfTip);
             this.Controls.Add(this.GroupBoxTipRodHeight);
             this.Controls.Add(this.GroupBoxWidestPartOfHandle);
@@ -280,6 +317,8 @@
             this.GroupBoxTypeOfTip.ResumeLayout(false);
             this.GroupBoxTypeOfTip.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.PictureBoxParameterInformation)).EndInit();
+            this.GroupBoxLengthFixingWings.ResumeLayout(false);
+            this.GroupBoxLengthFixingWings.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -305,6 +344,9 @@
         private System.Windows.Forms.GroupBox GroupBoxTypeOfTip;
         private System.Windows.Forms.RadioButton RadioButtonTypeOfTipTriangular;
         private System.Windows.Forms.RadioButton RadioButtonTypeOfTipCross;
+        private System.Windows.Forms.TextBox TextBoxLengthFixingWings;
+        private System.Windows.Forms.GroupBox GroupBoxLengthFixingWings;
+        private System.Windows.Forms.Label label1;
     }
 }
 

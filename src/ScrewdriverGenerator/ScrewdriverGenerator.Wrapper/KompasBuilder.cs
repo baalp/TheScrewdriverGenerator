@@ -9,6 +9,9 @@ using Kompas6Constants;
 
 namespace ScrewdriverGenerator.Wrapper
 {
+	/// <summary>
+	/// TODO
+	/// </summary>
     class KompasBuilder
     {
 
@@ -38,7 +41,8 @@ namespace ScrewdriverGenerator.Wrapper
 		/// <param name="direction_Type">Вариант направления выдавливания.</param>
 		/// <param name="depth">Длина выдавливания.</param>
 		/// <param name="draftValue">Угол наклона выдавливания.</param>
-		/// <param name="draftOutward">Направление уклона: true - уклон внутрь, false - уклон наружу.</param>
+		/// <param name="draftOutward">
+		/// Направление уклона: true - уклон внутрь, false - уклон наружу.</param>
 		public void CreateBaseExtrusion
 			(ksPart ksPart, ksEntity sketch, bool forward, Direction_Type direction_Type, 
 			double depth, double draftValue = 0, bool draftOutward = false)
@@ -63,7 +67,8 @@ namespace ScrewdriverGenerator.Wrapper
 		/// <param name="direction_Type">Вариант направления выдавливания.</param>
 		/// <param name="depth">Длина выдавливания.</param>
 		/// <param name="draftValue">Угол наклона выдавливания.</param>
-		/// <param name="draftOutward">Направление уклона: true - уклон внутрь, false - уклон наружу.</param>
+		/// <param name="draftOutward">
+		/// Направление уклона: true - уклон внутрь, false - уклон наружу.</param>
 		public void CutExtrusion(ksPart ksPart, ksEntity sketch, bool forward, 
 			Direction_Type direction_Type, double depth, double draftValue = 0, 
 			bool draftOutward = false)

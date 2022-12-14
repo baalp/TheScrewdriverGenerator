@@ -59,7 +59,8 @@ namespace ScrewdriverGenerator.View
                 { ScrewdriverParameterType.WidestPartHandle, TextBoxWidestPartOfHandle },
                 { ScrewdriverParameterType.LengthOuterPartRod, TextBoxLengthOfOuterPartOfRod },
                 { ScrewdriverParameterType.LengthHandle, TextBoxLengthOfHandle },
-                { ScrewdriverParameterType.LengthInnerPartRod, TextBoxLengthOfInnerPartOfRod }
+                { ScrewdriverParameterType.LengthInnerPartRod, TextBoxLengthOfInnerPartOfRod },
+                { ScrewdriverParameterType.LengthFixingWings, TextBoxLengthFixingWings }
             };
 
             // Предотвращение ввода некорректных символов во все TextBox.
@@ -68,6 +69,7 @@ namespace ScrewdriverGenerator.View
             TextBoxLengthOfOuterPartOfRod.KeyPress  += PreventInputWrongSymbols;
             TextBoxLengthOfHandle.KeyPress          += PreventInputWrongSymbols;
             TextBoxLengthOfInnerPartOfRod.KeyPress  += PreventInputWrongSymbols;
+            TextBoxLengthFixingWings.KeyPress       += PreventInputWrongSymbols;
 
             // Проверка на ввод некорректных значений.
             RadioButtonTypeOfTipFlat.CheckedChanged         += FindError;
@@ -78,6 +80,7 @@ namespace ScrewdriverGenerator.View
             TextBoxLengthOfOuterPartOfRod.TextChanged       += FindError;
             TextBoxLengthOfHandle.TextChanged               += FindError;
             TextBoxLengthOfInnerPartOfRod.TextChanged       += FindError;
+            TextBoxLengthFixingWings.TextChanged            += FindError;
             Load += FindError;
         }
 
@@ -115,10 +118,10 @@ namespace ScrewdriverGenerator.View
         /// <param name="e">Нажатая на клавиатуре клавиша.</param>
         private void FindError(object sender, EventArgs e)
         {
-            double[] _inputValues = new double[6];
+            double[] _inputValues = new double[7];
             _inputValues[0] = Convert.ToDouble(_selectedTypeOfTip);
 
-            //Проверка TextBox на пустоту
+            //Проверка TextBox на пустоту.
             int i = 1;
             foreach (var keyValue in _parameterToTextBox)
             {
@@ -128,7 +131,16 @@ namespace ScrewdriverGenerator.View
                 }
                 else 
                 {
-                    _inputValues[i] = -1;
+                    if (i == 6)
+                    {
+                        //Если вводимый параметр необязателен.
+                        _inputValues[i] = -2;
+                    }
+                    else
+                    {
+                        //Если вводимый параметр обязателен.
+                        _inputValues[i] = -1;
+                    }
                 }
                 i++;
             }
@@ -136,7 +148,8 @@ namespace ScrewdriverGenerator.View
             _screwdriverData.SetParameters
                 (
                 _inputValues[0], _inputValues[1], _inputValues[2], 
-                _inputValues[3], _inputValues[4], _inputValues[5]
+                _inputValues[3], _inputValues[4], _inputValues[5],
+                _inputValues[6]
                 );
 
             UpdateGUIBecauseFindError(_screwdriverData.Errors);
@@ -170,6 +183,8 @@ namespace ScrewdriverGenerator.View
                 (_screwdriverData.Parameters[ScrewdriverParameterType.LengthHandle]);
             GroupBoxLengthOfInnerPartOfRod.Text = _screwdriverData.GetGroupBoxDescription
                 (_screwdriverData.Parameters[ScrewdriverParameterType.LengthInnerPartRod]);
+            GroupBoxLengthFixingWings.Text = _screwdriverData.GetGroupBoxDescription
+                (_screwdriverData.Parameters[ScrewdriverParameterType.LengthFixingWings]);
 
             //Добавление статуса ошибки при ее наличии
             if (_errors.Any())
@@ -205,10 +220,15 @@ namespace ScrewdriverGenerator.View
                 {
                     TextBoxLengthOfHandle.BackColor = _colorError;
                     TextBoxLengthOfInnerPartOfRod.Enabled = false;
+                    TextBoxLengthFixingWings.Enabled = false;
                 }
                 else if (_errorKey == ScrewdriverParameterType.LengthInnerPartRod)
                 {
                     TextBoxLengthOfInnerPartOfRod.BackColor = _colorError;
+                }
+                else if (_errorKey == ScrewdriverParameterType.LengthFixingWings)
+                {
+                    TextBoxLengthFixingWings.BackColor = _colorError;
                 }
             }
             return;

@@ -11,6 +11,7 @@ namespace ScrewdriverGenerator.Model
         private double _value;
         private double _minValue;
         private double _maxValue;
+        private readonly string _errorMessageAttachment;
         private readonly string _emptyErrorMessage;
         private readonly string _minErrorMessage;
         private readonly string _maxErrorMessage;
@@ -52,6 +53,11 @@ namespace ScrewdriverGenerator.Model
             get => _screwdriverParameterType;
         }
 
+        public string ErrorMessageAttachment
+        {
+            get => _errorMessageAttachment;
+        }
+
         /// <summary>
         /// Один из параметров данных отвертки.
         /// </summary>
@@ -76,6 +82,7 @@ namespace ScrewdriverGenerator.Model
             _errors = errors;
             _minValue = minValue;
             _maxValue = maxValue;
+            _errorMessageAttachment = errorMessageAttachment;
             _emptyErrorMessage =
                 "Error: " + errorMessageAttachment + " has not been entered.";
             _minErrorMessage = 
@@ -93,6 +100,12 @@ namespace ScrewdriverGenerator.Model
         /// <returns>True - значение можно добавить в параметр, false - нельзя.</returns>
         private bool CheckRange(double value)
         {
+            //Реакция на необязательное пустое значение
+            if (value == -2.0)
+            {
+                return true;
+            }
+            //Реакция на обязательное пустое значение
             if (value == -1.0)
             {
                 _errors.Add(_screwdriverParameterType, _emptyErrorMessage);

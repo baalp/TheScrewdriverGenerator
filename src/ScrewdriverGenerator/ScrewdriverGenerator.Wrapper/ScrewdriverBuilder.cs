@@ -10,6 +10,9 @@ using Kompas6Constants;
 
 namespace ScrewdriverGenerator.Wrapper
 {
+	/// <summary>
+	/// 
+	/// </summary>
 	public class ScrewdriverBuilder
 	{
 		/// <summary>
@@ -49,31 +52,37 @@ namespace ScrewdriverGenerator.Wrapper
 		public void BuildScrewdriver(ScrewdriverData screwdriverData)
 		{
 			_screwdriverData = screwdriverData;
+			double T = _screwdriverData.Parameters[ScrewdriverParameterType.TipType].Value;
 			double H = _screwdriverData.Parameters[ScrewdriverParameterType.TipRodHeight].Value;
 			double D = _screwdriverData.Parameters[ScrewdriverParameterType.WidestPartHandle].Value;
 			double Lo = _screwdriverData.Parameters[ScrewdriverParameterType.LengthOuterPartRod].Value;
 			double Lh = _screwdriverData.Parameters[ScrewdriverParameterType.LengthHandle].Value;
 			double Li = _screwdriverData.Parameters[ScrewdriverParameterType.LengthInnerPartRod].Value;
+			double Lf = _screwdriverData.Parameters[ScrewdriverParameterType.LengthFixingWings].Value;
 
 			_kompasWrapper.StartKompas();
 			_ksDocument3D = _kompasWrapper.CreateDocument(true, true);
 			_ksPartRod = _kompasWrapper.SetDetailProperties
 				(_ksPartRod, _ksDocument3D, "ScrewdriverRod", 4737096);
-			BuildRod(H, Lo, Li);
+			BuildRod(T, H, D, Lo, Lh, Li, Lf);
 			_ksDocument3D = _kompasWrapper.CreateDocument(true, true);
 			_ksPartHandle = _kompasWrapper.SetDetailProperties
 				(_ksPartHandle, _ksDocument3D, "ScrewdriverHandle", 3381759);
-			BuildHandle(H, D, Lh);
+			BuildHandle(H, D, Lh, Lf);
 			CreateAssembly();
 		}
 
 		/// <summary>
 		/// Функция, создающая деталь стержня отвертки.
 		/// </summary>
+		/// <param name="T">Вид наконечника отвертки.</param>
 		/// <param name="H">Толщина наконечника стержня отвертки.</param>
+		/// <param name="D">Наибольший диаметр обхвата рукоятки отвертки.</param>
 		/// <param name="Lo">Длина внешней части отвертки.</param>
+		/// <param name="Lh">Длина рукоятки отвертки.</param>
 		/// <param name="Li">Длина внутренней части отвертки.</param>
-		private void BuildRod(double H, double Lo, double Li)
+		/// <param name="Lf">Длина закрепляющих крылышек.</param>
+		private void BuildRod(double T, double H, double D, double Lo, double Lh, double Li, double Lf)
 		{
 			//Закрепляющая часть
 			ksEntity planeYOZ =
@@ -82,10 +91,26 @@ namespace ScrewdriverGenerator.Wrapper
 				(_ksPartRod, planeYOZ, out var sketchInnerPartRodDefinition);
 			ksDocument2D ksDocument2D = sketchInnerPartRodDefinition.BeginEdit();
 			int regularPolygon = _kompasBuilder.CreateRegularPolygon
-				(_kompasWrapper._kompasObject, ksDocument2D, 6, 0, 0, 0, H * 5, true);
+				(_kompasWrapper._kompasObject, ksDocument2D, 6, 0, 0, 0, H * 5, false);
 			sketchInnerPartRodDefinition.EndEdit();
 			_kompasBuilder.CreateBaseExtrusion
 				(_ksPartRod, sketchInnerPartRod, true, Direction_Type.dtNormal, Li);
+
+			if (Lf != -2)
+            {
+				//Закрепляющие крылышки
+				ksEntity planeXOY =
+					_ksPartRod.GetDefaultEntity((short)ksObj3dTypeEnum.o3d_planeXOY);
+				ksEntity sketchFixingWingsRod = _kompasBuilder.CreateSketch
+					(_ksPartRod, planeXOY, out var sketchFixingWingsRodDefinition);
+				ksDocument2D = sketchFixingWingsRodDefinition.BeginEdit();
+				_kompasBuilder.CreateRectangle
+							(_kompasWrapper._kompasObject, ksDocument2D,
+							Lf, H * 10, -Lf - (Li - (Lh * 0.5)), -H * 5);
+				sketchFixingWingsRodDefinition.EndEdit();
+				_kompasBuilder.CreateBaseExtrusion
+					(_ksPartRod, sketchFixingWingsRod, true, Direction_Type.dtMiddlePlane, H);
+			}
 
 			//Стержень
 			ksEntity sketchOuterPartRod = _kompasBuilder.CreateSketch
@@ -98,7 +123,7 @@ namespace ScrewdriverGenerator.Wrapper
 				(_ksPartRod, sketchOuterPartRod, false, Direction_Type.dtReverse, Lo);
 
 			//Создание наконечника
-			switch (_screwdriverData.Parameters[ScrewdriverParameterType.TipType].Value)
+			switch (T)
 			{
 				//Плоский наконечник
 				case 0:
@@ -120,10 +145,10 @@ namespace ScrewdriverGenerator.Wrapper
 				//Крестовой наконечник
 				case 1:
 					//Треугольник - усечение для наконечника
-					ksEntity planeXOZ = _ksPartRod.GetDefaultEntity
+					ksEntity planeXOZ_ = _ksPartRod.GetDefaultEntity
 						((short)ksObj3dTypeEnum.o3d_planeXOZ);
 					ksEntity sketchCrossTipAngle = _kompasBuilder.CreateSketch
-						(_ksPartRod, planeXOZ, out var sketchCrossTipAngleDefinition);
+						(_ksPartRod, planeXOZ_, out var sketchCrossTipAngleDefinition);
 					ksDocument2D = sketchCrossTipAngleDefinition.BeginEdit();
 					ksDocument2D.ksLineSeg(Lo, 0, Lo, H * 2, 1);
 					ksDocument2D.ksLineSeg(Lo - H, H * 2, Lo, H * 2, 1);
@@ -258,7 +283,8 @@ namespace ScrewdriverGenerator.Wrapper
 		/// <param name="H">Толщина наконечника стержня отвертки.</param>
 		/// <param name="D">Наибольший диаметр обхвата рукоятки отвертки.</param>
 		/// <param name="Lh">Длина рукоятки отвертки.</param>
-		private void BuildHandle(double H, double D, double Lh)
+		/// <param name="Lf">Длина закрепляющих крылышек.</param>
+		private void BuildHandle(double H, double D, double Lh, double Lf)
 		{
 			//Создаем рукоять
 			ksEntity planeYOZ = _ksPartHandle.GetDefaultEntity((short)ksObj3dTypeEnum.o3d_planeYOZ);
@@ -275,7 +301,7 @@ namespace ScrewdriverGenerator.Wrapper
 				(_ksPartHandle, planeYOZ, out var sketchHandleHoleForRodDefinition);
 			ksDocument2D = sketchHandleHoleForRodDefinition.BeginEdit();
 			_kompasBuilder.CreateRegularPolygon
-				(_kompasWrapper._kompasObject, ksDocument2D, 6, 0, 0, 0, H * 5, true);
+				(_kompasWrapper._kompasObject, ksDocument2D, 6, 0, 0, 0, H * 5, false);
 			sketchHandleHoleForRodDefinition.EndEdit();
 			_kompasBuilder.CutExtrusion
 				(_ksPartHandle, sketchHandleHoleForRod, false, Direction_Type.dtReverse, Lh / 2);
@@ -320,6 +346,7 @@ namespace ScrewdriverGenerator.Wrapper
 			ksEntity sketchHandleUnevenness = _kompasBuilder.CreateSketch
 				(_ksPartHandle, planeYOZ, out var sketchHandleUnevennessDefinition);
 			ksDocument2D = sketchHandleUnevennessDefinition.BeginEdit();
+			//TODO: рефаторить
 			ksDocument2D.ksCircle(GetXorYbyRadiusAndAngle(true, D / 16 * 23, 0), 
 				GetXorYbyRadiusAndAngle(false, D / 16 * 23, 0), D, (short)ksCurveStyleEnum.ksCSNormal);
 			ksDocument2D.ksCircle(GetXorYbyRadiusAndAngle(true, D / 16 * 23, 60), 
@@ -335,6 +362,22 @@ namespace ScrewdriverGenerator.Wrapper
 			sketchHandleUnevennessDefinition.EndEdit();
 			_kompasBuilder.CutExtrusion(_ksPartHandle, sketchHandleUnevenness, false, 
 				Direction_Type.dtReverse, Lh);
+
+			if (Lf != -2)
+            {
+				//Отверстия под закрепляющие крылышки
+				ksEntity planeXOY =
+					_ksPartHandle.GetDefaultEntity((short)ksObj3dTypeEnum.o3d_planeXOY);
+				ksEntity sketchFixingWingsHandle = _kompasBuilder.CreateSketch
+					(_ksPartHandle, planeXOY, out var sketchFixingWingsHandleDefinition);
+				ksDocument2D = sketchFixingWingsHandleDefinition.BeginEdit();
+				_kompasBuilder.CreateRectangle
+							(_kompasWrapper._kompasObject, ksDocument2D,
+							Lf, H * 10, -Lf, -H * 5);
+				sketchFixingWingsHandleDefinition.EndEdit();
+				_kompasBuilder.CutExtrusion
+					(_ksPartHandle, sketchFixingWingsHandle, true, Direction_Type.dtMiddlePlane, H);
+			}
 		}
 
 		/// <summary>
