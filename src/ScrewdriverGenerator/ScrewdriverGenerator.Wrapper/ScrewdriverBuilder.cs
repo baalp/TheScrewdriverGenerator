@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ScrewdriverGenerator.Model;
+using System.IO;
 using Kompas6API5;
 using Kompas6Constants3D;
 using Kompas6Constants;
@@ -41,16 +42,38 @@ namespace ScrewdriverGenerator.Wrapper
 		private ksPart _ksPartHandle;
 
 		/// <summary>
+		/// Сборка отвертки.
+		/// </summary>
+		private ksPart _ksPart;
+
+		/// <summary>
+		/// Объект сбора коллекции объектов детали.
+		/// </summary>
+		private ksEntityCollection _ksEntityCollection;
+
+		/// <summary>
 		/// Объект документа.
 		/// </summary>
 		private ksDocument3D _ksDocument3D;
 
 		/// <summary>
+		/// Путь до папки, в которую экспортируется результат.
+		/// </summary>
+		private string _savePath;
+
+		/// <summary>
 		/// Главная функция, создающая детали для отвертки и их сборку.
 		/// </summary>
 		/// <param name="screwdriverData">Объект с информацией о создаваемой отвертке.</param>
-		public void BuildScrewdriver(ScrewdriverData screwdriverData)
+		/// <param name="outputPath">Путь к папке, в которой создастся папка вывода.</param>
+		public void BuildScrewdriver(ScrewdriverData screwdriverData, string outputPath)
 		{
+			_savePath = outputPath + "\\Screwdriver Generator Output\\";
+			Directory.CreateDirectory(_savePath);
+
+			DateTime now = DateTime.Now;
+			string timeAddition = now.ToString("yyyyMMddHHmmss");
+
 			_screwdriverData = screwdriverData;
 			double T = _screwdriverData.Parameters[ScrewdriverParameterType.TipType].Value;
 			double H = _screwdriverData.Parameters[ScrewdriverParameterType.TipRodHeight].Value;
@@ -61,15 +84,24 @@ namespace ScrewdriverGenerator.Wrapper
 			double Lf = _screwdriverData.Parameters[ScrewdriverParameterType.LengthFixingWings].Value;
 
 			_kompasWrapper.StartKompas();
-			_ksDocument3D = _kompasWrapper.CreateDocument(true, true);
+
+			_ksDocument3D = _kompasWrapper.CreateDocument(false, true);
 			_ksPartRod = _kompasWrapper.SetDetailProperties
-				(_ksPartRod, _ksDocument3D, "ScrewdriverRod", 4737096);
+				(_ksPartRod, _ksDocument3D, timeAddition + "_PartRodScrewdriver", 4737096);
 			BuildRod(T, H, D, Lo, Lh, Li, Lf);
-			_ksDocument3D = _kompasWrapper.CreateDocument(true, true);
+			_ksDocument3D.SaveAsEx(_savePath + timeAddition + "_PartRodScrewdriver.m3d", 0);
+
+			_ksDocument3D = _kompasWrapper.CreateDocument(false, true);
 			_ksPartHandle = _kompasWrapper.SetDetailProperties
-				(_ksPartHandle, _ksDocument3D, "ScrewdriverHandle", 3381759);
+				(_ksPartHandle, _ksDocument3D, timeAddition + "_PartHandleScrewdriver", 3381759);
 			BuildHandle(H, D, Lh, Lf);
-			CreateAssembly();
+			_ksDocument3D.SaveAsEx(_savePath + timeAddition + "_PartHandleScrewdriver.m3d", 0);
+
+			_ksDocument3D = _kompasWrapper.CreateDocument(false, false);
+			_ksPart = _kompasWrapper.SetDetailProperties
+				(_ksPart, _ksDocument3D, timeAddition + "_Screwdriver", 0);
+			CreateAssembly(timeAddition);
+			_ksDocument3D.SaveAsEx(_savePath + timeAddition + "_Screwdriver.m3d", 0);
 		}
 
 		/// <summary>
@@ -383,8 +415,31 @@ namespace ScrewdriverGenerator.Wrapper
 		/// <summary>
 		/// Функция, создающая сборку из делатей отвертки.
 		/// </summary>
-		private void CreateAssembly()
+		private void CreateAssembly(string timeAddition)
 		{
+			//Добавляем детали с сборку и соотносим их
+			Console.WriteLine(_ksDocument3D.SetPartFromFile(_savePath + timeAddition + "_PartRodScrewdriver.m3d", _ksPart, false));
+			Console.WriteLine(_ksDocument3D.SetPartFromFile(_savePath + timeAddition + "_PartHandleScrewdriver.m3d", _ksPart, false));
+			_ksPart.UpdatePlacement();
+			_ksDocument3D.RebuildDocument();
+
+			//Добавляем сопряжения
+			//Ручка
+			_ksPart = _ksDocument3D.GetPart(0);
+			_ksEntityCollection = _ksPart.EntityCollection((short)Obj3dType.o3d_face);
+			ksEntity _ksEntityRodBottom = _ksEntityCollection.GetByIndex(0);
+			_ksEntityCollection = _ksPart.EntityCollection((short)Obj3dType.o3d_axisOX);
+			ksEntity _ksEntityRodAxis = _ksEntityCollection.GetByIndex(0);
+
+			//Стержень
+			_ksPart = _ksDocument3D.GetPart(1);
+			_ksEntityCollection = _ksPart.EntityCollection((short)Obj3dType.o3d_face);
+			ksEntity _ksEntityHandleBottom = _ksEntityCollection.GetByIndex(8);
+			_ksEntityCollection = _ksPart.EntityCollection((short)Obj3dType.o3d_axisOX);
+			ksEntity _ksEntityHandleAxis = _ksEntityCollection.GetByIndex(0);
+
+			_ksDocument3D.AddMateConstraint(0, _ksEntityRodBottom, _ksEntityHandleBottom);
+			_ksDocument3D.AddMateConstraint(0, _ksEntityRodAxis, _ksEntityHandleAxis, 1);
 		}
 
 		/// <summary>

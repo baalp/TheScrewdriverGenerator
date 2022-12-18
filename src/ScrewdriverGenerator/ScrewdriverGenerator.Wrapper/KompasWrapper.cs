@@ -47,22 +47,15 @@ namespace ScrewdriverGenerator.Wrapper
         /// <summary>
         /// Создание документа в Компас-3D.
         /// </summary>
-        /// <param name="invisible">Видимость создания документа</param>
-        /// <param name="typeDoc">Тип документа: true - Деталь, false - сборка</param>
+        /// <param name="invisible">Видимость создания документа.</param>
+        /// <param name="typeDoc">Тип документа: true - деталь, false - сборка.</param>
         public ksDocument3D CreateDocument(bool invisible, bool typeDoc)
         {
-            try
-            {
-                ksDocument3D _ksDocument3D;
-                _ksDocument3D = (ksDocument3D)_kompasObject.Document3D();
-                _ksDocument3D.Create();
-                _ksDocument3D = (ksDocument3D)_kompasObject.ActiveDocument3D();
-                return _ksDocument3D;
-            }
-            catch
-            {
-                throw new ArgumentException("Не удается построить деталь");
-            }
+            ksDocument3D _ksDocument3D;
+            _ksDocument3D = (ksDocument3D)_kompasObject.Document3D();
+            _ksDocument3D.Create(invisible, typeDoc);
+            _ksDocument3D = (ksDocument3D)_kompasObject.ActiveDocument3D();
+            return _ksDocument3D;
         }
 
         /// <summary>
@@ -77,6 +70,7 @@ namespace ScrewdriverGenerator.Wrapper
         {
             _ksPart = (ksPart)_ksDocument3D.GetPart((short)Part_Type.pTop_Part);
             _ksPart.name = name;
+            _ksPart.fileName = name;
             _ksPart.SetAdvancedColor(color, 0.5, 0.6,
                 0.8, 0.8, 1, 0.5);
             _ksPart.Update();

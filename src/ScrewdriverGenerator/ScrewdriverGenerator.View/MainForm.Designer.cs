@@ -45,10 +45,14 @@
             this.GroupBoxTypeOfTip = new System.Windows.Forms.GroupBox();
             this.RadioButtonTypeOfTipTriangular = new System.Windows.Forms.RadioButton();
             this.RadioButtonTypeOfTipCross = new System.Windows.Forms.RadioButton();
-            this.PictureBoxParameterInformation = new System.Windows.Forms.PictureBox();
             this.TextBoxLengthFixingWings = new System.Windows.Forms.TextBox();
             this.GroupBoxLengthFixingWings = new System.Windows.Forms.GroupBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.FolderBrowserDialogOutputPath = new System.Windows.Forms.FolderBrowserDialog();
+            this.GroupBoxChooseOutputPath = new System.Windows.Forms.GroupBox();
+            this.LabelChoosenPath = new System.Windows.Forms.Label();
+            this.ButtonChooseOutputPath = new System.Windows.Forms.Button();
+            this.PictureBoxParameterInformation = new System.Windows.Forms.PictureBox();
             this.StatusStripError.SuspendLayout();
             this.GroupBoxLengthOfInnerPartOfRod.SuspendLayout();
             this.GroupBoxLengthOfHandle.SuspendLayout();
@@ -56,16 +60,16 @@
             this.GroupBoxWidestPartOfHandle.SuspendLayout();
             this.GroupBoxTipRodHeight.SuspendLayout();
             this.GroupBoxTypeOfTip.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.PictureBoxParameterInformation)).BeginInit();
             this.GroupBoxLengthFixingWings.SuspendLayout();
+            this.GroupBoxChooseOutputPath.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.PictureBoxParameterInformation)).BeginInit();
             this.SuspendLayout();
             // 
             // ButtonBuild
             // 
-            this.ButtonBuild.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.ButtonBuild.Enabled = false;
             this.ButtonBuild.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.ButtonBuild.Location = new System.Drawing.Point(14, 484);
+            this.ButtonBuild.Location = new System.Drawing.Point(14, 565);
             this.ButtonBuild.Name = "ButtonBuild";
             this.ButtonBuild.Size = new System.Drawing.Size(400, 35);
             this.ButtonBuild.TabIndex = 8;
@@ -78,9 +82,9 @@
             this.StatusStripError.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.StatusStripError.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.ToolStripStatusLabelError});
-            this.StatusStripError.Location = new System.Drawing.Point(0, 532);
+            this.StatusStripError.Location = new System.Drawing.Point(0, 616);
             this.StatusStripError.Name = "StatusStripError";
-            this.StatusStripError.Size = new System.Drawing.Size(941, 26);
+            this.StatusStripError.Size = new System.Drawing.Size(681, 26);
             this.StatusStripError.SizingGrip = false;
             this.StatusStripError.TabIndex = 1;
             // 
@@ -238,19 +242,6 @@
             this.RadioButtonTypeOfTipCross.UseVisualStyleBackColor = true;
             this.RadioButtonTypeOfTipCross.CheckedChanged += new System.EventHandler(this.RadioButtonTypeOfTipCross_CheckedChanged);
             // 
-            // PictureBoxParameterInformation
-            // 
-            this.PictureBoxParameterInformation.BackColor = System.Drawing.SystemColors.Control;
-            this.PictureBoxParameterInformation.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.PictureBoxParameterInformation.Image = global::ScrewdriverGenerator.View.Properties.Resources.ParameterInformation;
-            this.PictureBoxParameterInformation.InitialImage = global::ScrewdriverGenerator.View.Properties.Resources.ParameterInformation;
-            this.PictureBoxParameterInformation.Location = new System.Drawing.Point(428, 19);
-            this.PictureBoxParameterInformation.Name = "PictureBoxParameterInformation";
-            this.PictureBoxParameterInformation.Size = new System.Drawing.Size(500, 500);
-            this.PictureBoxParameterInformation.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.PictureBoxParameterInformation.TabIndex = 8;
-            this.PictureBoxParameterInformation.TabStop = false;
-            // 
             // TextBoxLengthFixingWings
             // 
             this.TextBoxLengthFixingWings.Enabled = false;
@@ -283,11 +274,59 @@
             this.label1.Text = "Leave the value blank to avoid adding this element to the model";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
+            // GroupBoxChooseOutputPath
+            // 
+            this.GroupBoxChooseOutputPath.Controls.Add(this.ButtonChooseOutputPath);
+            this.GroupBoxChooseOutputPath.Controls.Add(this.LabelChoosenPath);
+            this.GroupBoxChooseOutputPath.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.GroupBoxChooseOutputPath.Location = new System.Drawing.Point(14, 480);
+            this.GroupBoxChooseOutputPath.Name = "GroupBoxChooseOutputPath";
+            this.GroupBoxChooseOutputPath.Size = new System.Drawing.Size(400, 69);
+            this.GroupBoxChooseOutputPath.TabIndex = 10;
+            this.GroupBoxChooseOutputPath.TabStop = false;
+            this.GroupBoxChooseOutputPath.Text = "Choose output path: (A folder will be created automatically)";
+            // 
+            // LabelChoosenPath
+            // 
+            this.LabelChoosenPath.AutoSize = true;
+            this.LabelChoosenPath.ForeColor = System.Drawing.SystemColors.GrayText;
+            this.LabelChoosenPath.Location = new System.Drawing.Point(6, 46);
+            this.LabelChoosenPath.Name = "LabelChoosenPath";
+            this.LabelChoosenPath.Size = new System.Drawing.Size(86, 16);
+            this.LabelChoosenPath.TabIndex = 9;
+            this.LabelChoosenPath.Text = "Chosen path:";
+            this.LabelChoosenPath.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // ButtonChooseOutputPath
+            // 
+            this.ButtonChooseOutputPath.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.ButtonChooseOutputPath.Location = new System.Drawing.Point(9, 20);
+            this.ButtonChooseOutputPath.Name = "ButtonChooseOutputPath";
+            this.ButtonChooseOutputPath.Size = new System.Drawing.Size(382, 23);
+            this.ButtonChooseOutputPath.TabIndex = 10;
+            this.ButtonChooseOutputPath.Text = "Choose output path...";
+            this.ButtonChooseOutputPath.UseVisualStyleBackColor = true;
+            this.ButtonChooseOutputPath.Click += new System.EventHandler(this.ButtonChooseOutputPath_Click);
+            // 
+            // PictureBoxParameterInformation
+            // 
+            this.PictureBoxParameterInformation.BackColor = System.Drawing.SystemColors.Control;
+            this.PictureBoxParameterInformation.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.PictureBoxParameterInformation.Image = global::ScrewdriverGenerator.View.Properties.Resources.ScrewdriverBlueprint;
+            this.PictureBoxParameterInformation.InitialImage = global::ScrewdriverGenerator.View.Properties.Resources.ParameterInformation;
+            this.PictureBoxParameterInformation.Location = new System.Drawing.Point(428, 19);
+            this.PictureBoxParameterInformation.Name = "PictureBoxParameterInformation";
+            this.PictureBoxParameterInformation.Size = new System.Drawing.Size(234, 581);
+            this.PictureBoxParameterInformation.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.PictureBoxParameterInformation.TabIndex = 8;
+            this.PictureBoxParameterInformation.TabStop = false;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(941, 558);
+            this.ClientSize = new System.Drawing.Size(681, 642);
+            this.Controls.Add(this.GroupBoxChooseOutputPath);
             this.Controls.Add(this.GroupBoxLengthFixingWings);
             this.Controls.Add(this.GroupBoxTypeOfTip);
             this.Controls.Add(this.GroupBoxTipRodHeight);
@@ -316,9 +355,11 @@
             this.GroupBoxTipRodHeight.PerformLayout();
             this.GroupBoxTypeOfTip.ResumeLayout(false);
             this.GroupBoxTypeOfTip.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.PictureBoxParameterInformation)).EndInit();
             this.GroupBoxLengthFixingWings.ResumeLayout(false);
             this.GroupBoxLengthFixingWings.PerformLayout();
+            this.GroupBoxChooseOutputPath.ResumeLayout(false);
+            this.GroupBoxChooseOutputPath.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.PictureBoxParameterInformation)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -347,6 +388,10 @@
         private System.Windows.Forms.TextBox TextBoxLengthFixingWings;
         private System.Windows.Forms.GroupBox GroupBoxLengthFixingWings;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.FolderBrowserDialog FolderBrowserDialogOutputPath;
+        private System.Windows.Forms.GroupBox GroupBoxChooseOutputPath;
+        private System.Windows.Forms.Button ButtonChooseOutputPath;
+        private System.Windows.Forms.Label LabelChoosenPath;
     }
 }
 

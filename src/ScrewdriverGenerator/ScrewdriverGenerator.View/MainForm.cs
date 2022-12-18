@@ -12,6 +12,9 @@ using ScrewdriverGenerator.Wrapper;
 
 namespace ScrewdriverGenerator.View
 {
+    /// <summary>
+    /// Класс взаимодействия пользователя с программой через окно MainForm.
+    /// </summary>
     public partial class MainForm : Form
     {
         /// <summary>
@@ -45,12 +48,18 @@ namespace ScrewdriverGenerator.View
 		/// </summary>
         private int _selectedTypeOfTip = 0;
 
+        /// <summary>
+		/// Стандартный путь для сохранения файлов.
+		/// </summary>
+        private string defaultChosenPath = "C:\\Temp";
+
         public MainForm()
         {
             InitializeComponent();
 
             _screwdriverData = new ScrewdriverData();
             _screwdriverBuilder = new ScrewdriverBuilder();
+            LabelChoosenPath.Text = defaultChosenPath;
 
             //Dictonary зависимости типа данных от его TextBox для изменения его цвета.
             _parameterToTextBox = new Dictionary<ScrewdriverParameterType, TextBox>
@@ -251,7 +260,15 @@ namespace ScrewdriverGenerator.View
 
         private void ButtonBuild_Click(object sender, EventArgs e)
         {
-            _screwdriverBuilder.BuildScrewdriver(_screwdriverData);
+            _screwdriverBuilder.BuildScrewdriver(_screwdriverData, LabelChoosenPath.Text);
+        }
+
+        private void ButtonChooseOutputPath_Click(object sender, EventArgs e)
+        {
+            if (FolderBrowserDialogOutputPath.ShowDialog() == DialogResult.OK)
+            {
+                LabelChoosenPath.Text = FolderBrowserDialogOutputPath.SelectedPath;
+            }
         }
     }
 }
