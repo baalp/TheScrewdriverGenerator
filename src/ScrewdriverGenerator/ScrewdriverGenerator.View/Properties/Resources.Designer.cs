@@ -63,20 +63,20 @@ namespace ScrewdriverGenerator.View.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap ParameterInformation {
+        internal static System.Drawing.Bitmap ScrewdriverBlueprint {
             get {
-                object obj = ResourceManager.GetObject("ParameterInformation", resourceCulture);
+                object obj = ResourceManager.GetObject("ScrewdriverBlueprint", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         /// </summary>
-        internal static System.Drawing.Bitmap ScrewdriverBlueprint {
+        internal static System.Drawing.Icon ScrewdriverGeneratorIcon {
             get {
-                object obj = ResourceManager.GetObject("ScrewdriverBlueprint", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                object obj = ResourceManager.GetObject("ScrewdriverGeneratorIcon", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
             }
         }
     }

@@ -1,11 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using ScrewdriverGenerator.Model;
 using ScrewdriverGenerator.Wrapper;
@@ -56,6 +52,8 @@ namespace ScrewdriverGenerator.View
         public MainForm()
         {
             InitializeComponent();
+
+            this.Icon = Properties.Resources.ScrewdriverGeneratorIcon;
 
             _screwdriverData = new ScrewdriverData();
             _screwdriverBuilder = new ScrewdriverBuilder();
@@ -165,7 +163,7 @@ namespace ScrewdriverGenerator.View
         }
 
         /// <summary>
-        /// обновление внешнего вида GUI при изменении статуса ошибки.
+        /// Обновление внешнего вида GUI при изменении статуса ошибки.
         /// </summary>
         /// <param name="_errors">Библиотека, хранящая ошибку и тип данных отвертки с ней.</param>
         private void UpdateGUIBecauseFindError(Dictionary<ScrewdriverParameterType, string> _errors)
@@ -243,26 +241,41 @@ namespace ScrewdriverGenerator.View
             return;
         }
 
+        /// <summary>
+        /// Реакция программы на выбор плоского наконечника отвертки.
+        /// </summary>
         private void RadioButtonTypeOfTipFlat_CheckedChanged(object sender, EventArgs e)
         {
             _selectedTypeOfTip = RadioButtonTypeOfTipFlat.TabIndex;
         }
 
+        /// <summary>
+        /// Реакция программы на выбор крестового наконечника отвертки.
+        /// </summary>
         private void RadioButtonTypeOfTipCross_CheckedChanged(object sender, EventArgs e)
         {
             _selectedTypeOfTip = RadioButtonTypeOfTipCross.TabIndex;
         }
 
+        /// <summary>
+        /// Реакция программы на выбор треугольного наконечника отвертки.
+        /// </summary>
         private void RadioButtonTypeOfTipTriangular_CheckedChanged(object sender, EventArgs e)
         {
             _selectedTypeOfTip = RadioButtonTypeOfTipTriangular.TabIndex;
         }
 
+        /// <summary>
+        /// Реакция программы на нажатие кнопки "Построить".
+        /// </summary>
         private void ButtonBuild_Click(object sender, EventArgs e)
         {
             _screwdriverBuilder.BuildScrewdriver(_screwdriverData, LabelChoosenPath.Text);
         }
 
+        /// <summary>
+        /// Реакция программы на нажатие кнопки "Выбрать путь сохранения".
+        /// </summary>
         private void ButtonChooseOutputPath_Click(object sender, EventArgs e)
         {
             if (FolderBrowserDialogOutputPath.ShowDialog() == DialogResult.OK)

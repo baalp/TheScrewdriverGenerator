@@ -50,8 +50,8 @@
             this.label1 = new System.Windows.Forms.Label();
             this.FolderBrowserDialogOutputPath = new System.Windows.Forms.FolderBrowserDialog();
             this.GroupBoxChooseOutputPath = new System.Windows.Forms.GroupBox();
-            this.LabelChoosenPath = new System.Windows.Forms.Label();
             this.ButtonChooseOutputPath = new System.Windows.Forms.Button();
+            this.LabelChoosenPath = new System.Windows.Forms.Label();
             this.PictureBoxParameterInformation = new System.Windows.Forms.PictureBox();
             this.StatusStripError.SuspendLayout();
             this.GroupBoxLengthOfInnerPartOfRod.SuspendLayout();
@@ -286,17 +286,6 @@
             this.GroupBoxChooseOutputPath.TabStop = false;
             this.GroupBoxChooseOutputPath.Text = "Choose output path: (A folder will be created automatically)";
             // 
-            // LabelChoosenPath
-            // 
-            this.LabelChoosenPath.AutoSize = true;
-            this.LabelChoosenPath.ForeColor = System.Drawing.SystemColors.GrayText;
-            this.LabelChoosenPath.Location = new System.Drawing.Point(6, 46);
-            this.LabelChoosenPath.Name = "LabelChoosenPath";
-            this.LabelChoosenPath.Size = new System.Drawing.Size(86, 16);
-            this.LabelChoosenPath.TabIndex = 9;
-            this.LabelChoosenPath.Text = "Chosen path:";
-            this.LabelChoosenPath.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
             // ButtonChooseOutputPath
             // 
             this.ButtonChooseOutputPath.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
@@ -308,12 +297,23 @@
             this.ButtonChooseOutputPath.UseVisualStyleBackColor = true;
             this.ButtonChooseOutputPath.Click += new System.EventHandler(this.ButtonChooseOutputPath_Click);
             // 
+            // LabelChoosenPath
+            // 
+            this.LabelChoosenPath.AutoSize = true;
+            this.LabelChoosenPath.ForeColor = System.Drawing.SystemColors.GrayText;
+            this.LabelChoosenPath.Location = new System.Drawing.Point(6, 46);
+            this.LabelChoosenPath.Name = "LabelChoosenPath";
+            this.LabelChoosenPath.Size = new System.Drawing.Size(86, 16);
+            this.LabelChoosenPath.TabIndex = 9;
+            this.LabelChoosenPath.Text = "Chosen path:";
+            this.LabelChoosenPath.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
             // PictureBoxParameterInformation
             // 
             this.PictureBoxParameterInformation.BackColor = System.Drawing.SystemColors.Control;
             this.PictureBoxParameterInformation.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.PictureBoxParameterInformation.Image = global::ScrewdriverGenerator.View.Properties.Resources.ScrewdriverBlueprint;
-            this.PictureBoxParameterInformation.InitialImage = global::ScrewdriverGenerator.View.Properties.Resources.ParameterInformation;
+            this.PictureBoxParameterInformation.InitialImage = global::ScrewdriverGenerator.View.Properties.Resources.ScrewdriverBlueprint;
             this.PictureBoxParameterInformation.Location = new System.Drawing.Point(428, 19);
             this.PictureBoxParameterInformation.Name = "PictureBoxParameterInformation";
             this.PictureBoxParameterInformation.Size = new System.Drawing.Size(234, 581);

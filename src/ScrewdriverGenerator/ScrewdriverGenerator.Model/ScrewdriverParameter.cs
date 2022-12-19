@@ -1,23 +1,60 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace ScrewdriverGenerator.Model
 {
+    /// <summary>
+    /// Класс одного из параметров отвертки.
+    /// </summary>
     public class ScrewdriverParameter
     {
+        /// <summary>
+        /// Значение параметра.
+        /// </summary>
         private double _value;
+
+        /// <summary>
+        /// Минимально возможное значение параметра.
+        /// </summary>
         private double _minValue;
+
+        /// <summary>
+        /// Максимально возможное значение параметра.
+        /// </summary>
         private double _maxValue;
-        private readonly string _errorMessageAttachment;
+
+        /// <summary>
+        /// Имя параметра, прибавляемое к сообщениям об этом значении.
+        /// </summary>
+        private readonly string _messageAttachment;
+
+        /// <summary>
+        /// Сообщение об ошибке пустого значения параметра.
+        /// </summary>
         private readonly string _emptyErrorMessage;
+
+        /// <summary>
+        /// Сообщение об ошибке о слишком маленьком значении.
+        /// </summary>
         private readonly string _minErrorMessage;
+
+        /// <summary>
+        /// Сообщение об ошибке о слишком большом значении.
+        /// </summary>
         private readonly string _maxErrorMessage;
+
+        /// <summary>
+        /// Тип параметра.
+        /// </summary>
         private readonly ScrewdriverParameterType _screwdriverParameterType;
+
+        /// <summary>
+        /// Библиотека ошибок параметра.
+        /// </summary>
         private readonly Dictionary<ScrewdriverParameterType, string> _errors;
 
+        /// <summary>
+        /// Значение параметра.
+        /// </summary>
         public double Value
         {
             get => _value;
@@ -30,6 +67,9 @@ namespace ScrewdriverGenerator.Model
             }
         }
 
+        /// <summary>
+        /// Минимально возможное значение параметра.
+        /// </summary>
         public double MinValue
         {
             get => _minValue;
@@ -39,6 +79,9 @@ namespace ScrewdriverGenerator.Model
             }
         }
 
+        /// <summary>
+        /// Максимально возможное значение параметра.
+        /// </summary>
         public double MaxValue
         {
             get => _maxValue;
@@ -48,14 +91,20 @@ namespace ScrewdriverGenerator.Model
             }
         }
 
+        /// <summary>
+        /// Тип параметра.
+        /// </summary>
         public ScrewdriverParameterType ScrewdriverParameterType
         {
             get => _screwdriverParameterType;
         }
 
-        public string ErrorMessageAttachment
+        /// <summary>
+        /// Имя параметра, прибавляемое к сообщениям об этом значении.
+        /// </summary>
+        public string MessageAttachment
         {
-            get => _errorMessageAttachment;
+            get => _messageAttachment;
         }
 
         /// <summary>
@@ -64,8 +113,8 @@ namespace ScrewdriverGenerator.Model
         /// <param name="value">Значение параметра.</param>
         /// <param name="minValue">Минимально возможное значение параметра.</param>
         /// <param name="maxValue">Максимально возможное значение параметра.</param>
-        /// <param name="errorMessageAttachment">
-        /// Название параметра, используемое в сообщениях ошибки.</param>
+        /// <param name="messageAttachment">
+        /// Название параметра, используемое в различных сообщениях.</param>
         /// <param name="screwdriverParameterType">Тип параметра отвертки.</param>
         /// <param name="errors">
         /// Библиотека с ошибками, возникшими при заполнении параметра.</param>
@@ -74,7 +123,7 @@ namespace ScrewdriverGenerator.Model
             double value, 
             double minValue, 
             double maxValue,
-            string errorMessageAttachment,
+            string messageAttachment,
             ScrewdriverParameterType screwdriverParameterType,
             Dictionary<ScrewdriverParameterType, string> errors
             )
@@ -82,13 +131,13 @@ namespace ScrewdriverGenerator.Model
             _errors = errors;
             _minValue = minValue;
             _maxValue = maxValue;
-            _errorMessageAttachment = errorMessageAttachment;
+            _messageAttachment = messageAttachment;
             _emptyErrorMessage =
-                "Error: " + errorMessageAttachment + " has not been entered.";
+                "Error: " + messageAttachment + " has not been entered.";
             _minErrorMessage = 
-                "Error: " + errorMessageAttachment + " is less than the permissible value.";
+                "Error: " + messageAttachment + " is less than the permissible value.";
             _maxErrorMessage = 
-                "Error: " + errorMessageAttachment + " is greater than the allowable.";
+                "Error: " + messageAttachment + " is greater than the allowable.";
             _screwdriverParameterType = screwdriverParameterType;
             Value = value;
         }

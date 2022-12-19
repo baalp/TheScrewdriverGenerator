@@ -1,20 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ScrewdriverGenerator.Model
 {
+    /// <summary>
+    /// Класс всех параметров отвертки.
+    /// </summary>
     public class ScrewdriverData
     {
         /// <summary>
-        /// Библиотека параметров отвертки и их типов
+        /// Библиотека параметров отвертки и их типов.
         /// </summary>
         public Dictionary<ScrewdriverParameterType, ScrewdriverParameter> Parameters { get; set; }
 
         /// <summary>
-        /// Библиотека ошибок данных отвертки и их типа
+        /// Библиотека ошибок данных отвертки и их типа.
         /// </summary>
         public Dictionary<ScrewdriverParameterType, string> Errors { get; set; }
 
@@ -29,52 +29,52 @@ namespace ScrewdriverGenerator.Model
         private const double _maxTipRodHeight = 10;
 
         /// <summary>
-        /// Минимальное возможное соотношение значений TipRodHeight и WidestPartHandle
+        /// Минимальное возможное соотношение значений TipRodHeight и WidestPartHandle.
         /// </summary>
         private const double _minWidestPartHandleMultiple = 16;
 
         /// <summary>
-        /// Максимальное возможное соотношение значений TipRodHeight и WidestPartHandle
+        /// Максимальное возможное соотношение значений TipRodHeight и WidestPartHandle.
         /// </summary>
         private const double _maxWidestPartHandleMultiple = 24;
 
         /// <summary>
-        /// Минимальное возможное соотношение значений TipRodHeight и LengthOuterPartRod
+        /// Минимальное возможное соотношение значений TipRodHeight и LengthOuterPartRod.
         /// </summary>
         private const double _minLengthOuterPartRodMultiple = 20;
 
         /// <summary>
-        /// Максимальное возможное соотношение значений TipRodHeight и LengthOuterPartRod
+        /// Максимальное возможное соотношение значений TipRodHeight и LengthOuterPartRod.
         /// </summary>
         private const double _maxLengthOuterPartRodMultiple = 400;
 
         /// <summary>
-        /// Минимальное возможное соотношение значений WidestPartHandle и LengthHandle
+        /// Минимальное возможное соотношение значений WidestPartHandle и LengthHandle.
         /// </summary>
         private const double _minLengthHandleMultiple = 3.75;
 
         /// <summary>
-        /// Максимальное возможное соотношение значений WidestPartHandle и LengthHandle
+        /// Максимальное возможное соотношение значений WidestPartHandle и LengthHandle.
         /// </summary>
         private const double _maxLengthHandleMultiple = 7.5;
 
         /// <summary>
-        /// Минимальное возможное соотношение значений LengthHandle и LengthInnerPartRod
+        /// Минимальное возможное соотношение значений LengthHandle и LengthInnerPartRod.
         /// </summary>
         private const double _minLengthInnerPartRodMultiple = 0.5;
 
         /// <summary>
-        /// Максимальное возможное соотношение значений LengthHandle и LengthInnerPartRod
+        /// Максимальное возможное соотношение значений LengthHandle и LengthInnerPartRod.
         /// </summary>
         private const double _maxLengthInnerPartRodMultiple = 0.6;
 
         /// <summary>
-        /// Минимальное возможное соотношение значений LengthHandle и LengthFixingWings
+        /// Минимальное возможное соотношение значений LengthHandle и LengthFixingWings.
         /// </summary>
         private const double _minLengthFixingWingsMultiple = 0.1;
 
         /// <summary>
-        /// Максимальное возможное соотношение значений LengthHandle и LengthFixingWings
+        /// Максимальное возможное соотношение значений LengthHandle и LengthFixingWings.
         /// </summary>
         private const double _maxLengthFixingWingsMultiple = 0.5;
 
@@ -84,7 +84,6 @@ namespace ScrewdriverGenerator.Model
 
             Parameters = new Dictionary<ScrewdriverParameterType, ScrewdriverParameter>()
             {
-                //TODO: duplication
                 { ScrewdriverParameterType.TipType,
                     new ScrewdriverParameter
                     (
@@ -296,12 +295,12 @@ namespace ScrewdriverGenerator.Model
         {
             if ((int)screwdriverParameter.ScrewdriverParameterType <= stopper)
             {
-                return screwdriverParameter.ErrorMessageAttachment + ": "
+                return screwdriverParameter.MessageAttachment + ": "
                     + screwdriverParameter.MinValue + " - " + screwdriverParameter.MaxValue + " mm.";
             }
             else
             {
-                return screwdriverParameter.ErrorMessageAttachment + ": "
+                return screwdriverParameter.MessageAttachment + ": "
                     + "# - # mm.";
             }
         }

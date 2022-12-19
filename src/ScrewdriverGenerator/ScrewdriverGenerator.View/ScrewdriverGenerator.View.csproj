@@ -47,6 +47,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Resources\ScrewdriverGeneratorIcon.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -122,6 +125,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\ScrewdriverBlueprint.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\ScrewdriverGeneratorIcon.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
