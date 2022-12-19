@@ -108,6 +108,14 @@ namespace ScrewdriverGenerator.Model
         }
 
         /// <summary>
+        /// Имя параметра, прибавляемое к сообщениям об этом значении.
+        /// </summary>
+        public Dictionary<ScrewdriverParameterType, string> Errors
+        {
+            get => _errors;
+        }
+
+        /// <summary>
         /// Один из параметров данных отвертки.
         /// </summary>
         /// <param name="value">Значение параметра.</param>

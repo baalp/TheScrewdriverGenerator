@@ -12,6 +12,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScrewdriverGenerator.Model"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScrewdriverGenerator.Wrapper", "ScrewdriverGenerator.Wrapper\ScrewdriverGenerator.Wrapper.csproj", "{59282823-06E2-4CDF-B0BD-BC0E605C9766}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScrewdriverGenerator.UnitTest", "ScrewdriverGenerator.UnitTest\ScrewdriverGenerator.UnitTest.csproj", "{E1097907-AC79-4EB3-A323-0E0ACC12630D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,6 +32,10 @@ Global
 		{59282823-06E2-4CDF-B0BD-BC0E605C9766}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{59282823-06E2-4CDF-B0BD-BC0E605C9766}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{59282823-06E2-4CDF-B0BD-BC0E605C9766}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E1097907-AC79-4EB3-A323-0E0ACC12630D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E1097907-AC79-4EB3-A323-0E0ACC12630D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E1097907-AC79-4EB3-A323-0E0ACC12630D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E1097907-AC79-4EB3-A323-0E0ACC12630D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
