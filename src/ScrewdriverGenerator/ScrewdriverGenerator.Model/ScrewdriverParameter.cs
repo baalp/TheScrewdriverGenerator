@@ -108,7 +108,7 @@ namespace ScrewdriverGenerator.Model
         }
 
         /// <summary>
-        /// Имя параметра, прибавляемое к сообщениям об этом значении.
+        /// Библиотека ошибок параметра.
         /// </summary>
         public Dictionary<ScrewdriverParameterType, string> Errors
         {

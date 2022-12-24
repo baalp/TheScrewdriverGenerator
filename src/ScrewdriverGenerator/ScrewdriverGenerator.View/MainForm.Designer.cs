@@ -47,7 +47,7 @@
             this.RadioButtonTypeOfTipCross = new System.Windows.Forms.RadioButton();
             this.TextBoxLengthFixingWings = new System.Windows.Forms.TextBox();
             this.GroupBoxLengthFixingWings = new System.Windows.Forms.GroupBox();
-            this.label1 = new System.Windows.Forms.Label();
+            this.LabelFixingWingsLeaveBlank = new System.Windows.Forms.Label();
             this.FolderBrowserDialogOutputPath = new System.Windows.Forms.FolderBrowserDialog();
             this.GroupBoxChooseOutputPath = new System.Windows.Forms.GroupBox();
             this.ButtonChooseOutputPath = new System.Windows.Forms.Button();
@@ -154,7 +154,7 @@
             this.TextBoxLengthOfOuterPartOfRod.Name = "TextBoxLengthOfOuterPartOfRod";
             this.TextBoxLengthOfOuterPartOfRod.Size = new System.Drawing.Size(388, 22);
             this.TextBoxLengthOfOuterPartOfRod.TabIndex = 5;
-            this.TextBoxLengthOfOuterPartOfRod.Text = "30";
+            this.TextBoxLengthOfOuterPartOfRod.Text = "15";
             // 
             // GroupBoxLengthOfOuterPartOfRod
             // 
@@ -253,7 +253,7 @@
             // 
             // GroupBoxLengthFixingWings
             // 
-            this.GroupBoxLengthFixingWings.Controls.Add(this.label1);
+            this.GroupBoxLengthFixingWings.Controls.Add(this.LabelFixingWingsLeaveBlank);
             this.GroupBoxLengthFixingWings.Controls.Add(this.TextBoxLengthFixingWings);
             this.GroupBoxLengthFixingWings.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.GroupBoxLengthFixingWings.Location = new System.Drawing.Point(14, 399);
@@ -261,18 +261,18 @@
             this.GroupBoxLengthFixingWings.Size = new System.Drawing.Size(400, 69);
             this.GroupBoxLengthFixingWings.TabIndex = 8;
             this.GroupBoxLengthFixingWings.TabStop = false;
-            this.GroupBoxLengthFixingWings.Text = "Length of inner part of rod: (Li, in mm, # - # mm)";
+            this.GroupBoxLengthFixingWings.Text = "Length of fixing wings: (Li, in mm, # - # mm)";
             // 
-            // label1
+            // LabelFixingWingsLeaveBlank
             // 
-            this.label1.AutoSize = true;
-            this.label1.ForeColor = System.Drawing.SystemColors.GrayText;
-            this.label1.Location = new System.Drawing.Point(6, 46);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(385, 16);
-            this.label1.TabIndex = 9;
-            this.label1.Text = "Leave the value blank to avoid adding this element to the model";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.LabelFixingWingsLeaveBlank.AutoSize = true;
+            this.LabelFixingWingsLeaveBlank.ForeColor = System.Drawing.SystemColors.GrayText;
+            this.LabelFixingWingsLeaveBlank.Location = new System.Drawing.Point(6, 46);
+            this.LabelFixingWingsLeaveBlank.Name = "LabelFixingWingsLeaveBlank";
+            this.LabelFixingWingsLeaveBlank.Size = new System.Drawing.Size(385, 16);
+            this.LabelFixingWingsLeaveBlank.TabIndex = 9;
+            this.LabelFixingWingsLeaveBlank.Text = "Leave the value blank to avoid adding this element to the model";
+            this.LabelFixingWingsLeaveBlank.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // GroupBoxChooseOutputPath
             // 
@@ -387,7 +387,7 @@
         private System.Windows.Forms.RadioButton RadioButtonTypeOfTipCross;
         private System.Windows.Forms.TextBox TextBoxLengthFixingWings;
         private System.Windows.Forms.GroupBox GroupBoxLengthFixingWings;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label LabelFixingWingsLeaveBlank;
         private System.Windows.Forms.FolderBrowserDialog FolderBrowserDialogOutputPath;
         private System.Windows.Forms.GroupBox GroupBoxChooseOutputPath;
         private System.Windows.Forms.Button ButtonChooseOutputPath;
